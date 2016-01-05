@@ -40,7 +40,7 @@
      </property>
      <layout class="QVBoxLayout" name="LAYOUT_formulaire">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout">
+       <layout class="QVBoxLayout" name="LAYOUT_verticalEnsemble">
         <item>
          <widget class="QSplitter" name="SPLITTER_identifiant">
           <property name="orientation">
