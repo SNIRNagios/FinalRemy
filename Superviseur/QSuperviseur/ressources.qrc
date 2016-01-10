@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>img/1452464368_gnome-help.ico</file>
+        <file>img/1452464407_address-book.ico</file>
+        <file>img/1452464446_Message.ico</file>
+        <file>img/eye.ico</file>
+        <file>img/logo.png</file>
+        <file>img/white_wall.jpeg</file>
+    </qresource>
+</RCC>
