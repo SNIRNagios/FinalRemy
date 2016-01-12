@@ -22,6 +22,8 @@ public:
 private slots:
     void on_BTN_Connexion_clicked();
 
+    void on_BTN_AccesSuperviseur_clicked();
+
 private:
     Ui::FEN_Accueil *ui;
     QLabel *statusLabel;

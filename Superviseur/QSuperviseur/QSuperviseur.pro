@@ -14,13 +14,16 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         fen_accueil.cpp \
-    fen_administration.cpp
+    fen_administration.cpp \
+    fen_superviseur.cpp
 
 HEADERS  += fen_accueil.h \
-    fen_administration.h
+    fen_administration.h \
+    fen_superviseur.h
 
 FORMS    += fen_accueil.ui \
-    fen_administration.ui
+    fen_administration.ui \
+    fen_superviseur.ui
 
 RESOURCES += \
     ressources.qrc

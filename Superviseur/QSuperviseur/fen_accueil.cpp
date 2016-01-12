@@ -1,4 +1,5 @@
 #include "fen_accueil.h"
+#include "fen_superviseur.h"
 #include "ui_fen_accueil.h"
 
 FEN_Accueil::FEN_Accueil(QWidget *parent) :
@@ -40,4 +41,13 @@ void FEN_Accueil::on_BTN_Connexion_clicked()
     {
         ui->SB_Informations->showMessage("Identifiants incorrectes");
     }
+}
+
+void FEN_Accueil::on_BTN_AccesSuperviseur_clicked()
+{
+    this->hide();
+    fen_superviseur fenetreSuperviseur;
+    fenetreSuperviseur.setModal(true);
+    //fenetreSuperviseur.setFixedSize(500,400);
+    fenetreSuperviseur.exec();
 }
