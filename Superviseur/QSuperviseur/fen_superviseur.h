@@ -3,9 +3,13 @@
 
 #include <QDialog>
 #include <QWidget>
+#include <QLabel>
 
-namespace Ui {
-class fen_superviseur;
+#include "collecteur.h"
+
+namespace Ui
+{
+    class fen_superviseur;
 }
 
 class fen_superviseur : public QDialog
@@ -16,9 +20,20 @@ public:
     explicit fen_superviseur(QWidget *parent = 0);
     ~fen_superviseur();
 
+
+
 private:
     Ui::fen_superviseur *ui;
+
     QWidget *rectangle;
+    QLabel *statusLabel;
+
+
+
+
+
+
+
 };
 
 #endif // FEN_SUPERVISEUR_H

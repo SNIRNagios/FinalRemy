@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>QSupervise</string>
+   <string>LES VALLONS DE LA TOUR - Accueil</string>
   </property>
   <property name="windowIcon">
    <iconset resource="ressources.qrc">
@@ -639,10 +639,6 @@
    <zorder>layoutWidget</zorder>
    <zorder>GB_Administration</zorder>
    <zorder>line</zorder>
-   <zorder>BTN_AccesSuperviseur</zorder>
-   <zorder>BTN_AccesSuperviseur</zorder>
-   <zorder>LA_AccesSuperviseur</zorder>
-   <zorder>HSPACER_AccesSuperviseur</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

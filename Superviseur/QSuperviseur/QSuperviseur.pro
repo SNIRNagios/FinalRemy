@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         fen_accueil.cpp \
     fen_administration.cpp \
-    fen_superviseur.cpp
+    fen_superviseur.cpp \
+    collecteur.cpp
 
 HEADERS  += fen_accueil.h \
     fen_administration.h \
-    fen_superviseur.h
+    fen_superviseur.h \
+    collecteur.h
 
 FORMS    += fen_accueil.ui \
     fen_administration.ui \
