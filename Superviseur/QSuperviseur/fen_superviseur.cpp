@@ -16,15 +16,12 @@ fen_superviseur::fen_superviseur(QWidget *parent) : QDialog(parent), ui(new Ui::
     ui->W_RectangleFailure->setStyleSheet("background-color:red");
 
     Collecteur site;
+    QString *hotes;
+    hotes = new QString();
 
-    if(site.connexionCollecteur(QHostAddress("172.17.50.202")) == true)
-    {
-        statusLabel->setText("Connexion réussie.");
-    }
-    else
-    {
-        statusLabel->setText("La connexion a échoué.");
-    }
+    site.connexionCollecteur(QHostAddress("172.17.50.202"));
+    site.obtenirHotes(hotes);
+
 
 
     //rectangle = new QWidget(this);

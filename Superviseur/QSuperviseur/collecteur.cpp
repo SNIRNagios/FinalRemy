@@ -2,19 +2,20 @@
 
 Collecteur::Collecteur(QObject *parent) : QObject(parent)
 {
-    //PARTIE RESEAUX
     portLivestatus = 6557;
     adresseCollecteur = new QHostAddress("172.17.50.202");
-
 }
 
-bool Collecteur::connexionCollecteur(QHostAddress collecteur)
+void Collecteur::connexionCollecteur(QHostAddress collecteur)
 {
     socketLivestatus = new QTcpSocket(this);
     socketLivestatus->connectToHost(collecteur, portLivestatus);
+}
 
-
-
-    return true;
+void Collecteur::obtenirHotes(QString *contenuSocket)
+{
+    QTextStream contenu(socketLivestatus);
+    QString requete = "GET hosts";
+    contenu << requete << endl;
 }
 

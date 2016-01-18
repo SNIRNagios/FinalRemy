@@ -14,9 +14,12 @@ private:
     QHostAddress *adresseCollecteur;
     QTcpSocket *socketLivestatus;
     quint16 portLivestatus;
+    QString cheminSocket;
 public:
     explicit Collecteur(QObject *parent = 0);
-    bool connexionCollecteur(QHostAddress collecteur);
+    void connexionCollecteur(QHostAddress collecteur);
+    void obtenirHotes(QString *contenuSocket);
+
 
 signals:
 
