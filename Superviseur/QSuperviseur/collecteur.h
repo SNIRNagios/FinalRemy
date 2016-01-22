@@ -9,21 +9,30 @@
 
 class Collecteur : public QObject
 {
-    Q_OBJECT
+    Q_OBJECT  
 private:
-    QHostAddress *adresseCollecteur;
+    QString adresseCollecteur;
     QTcpSocket *socketLivestatus;
     quint16 portLivestatus;
     QString cheminSocket;
+    QString requete;
+
+
 public:
     explicit Collecteur(QObject *parent = 0);
-    void connexionCollecteur(QHostAddress collecteur);
-    void obtenirHotes(QString *contenuSocket);
-
+    void deconnexionCollecteur();
 
 signals:
+    void vers_IHM_connexionEtat();
+    void vers_IHM_texte(QString);
 
-public slots:
+private slots:
+    void connexionEtat();
+    void lectureCollecteur();
+
+public slots: 
+    void connexionCollecteur(QString collecteur);
+    void obtenirHotes(QString query);
 };
 
 #endif // COLLECTEUR_H

@@ -3,19 +3,50 @@
 Collecteur::Collecteur(QObject *parent) : QObject(parent)
 {
     portLivestatus = 6557;
-    adresseCollecteur = new QHostAddress("172.17.50.202");
+    socketLivestatus = new QTcpSocket();
+
+
+    connect(socketLivestatus, SIGNAL(connected()), this, SLOT(connexionEtat()));
+    connect(socketLivestatus, SIGNAL(readyRead()), this, SLOT(lectureCollecteur()));
 }
 
-void Collecteur::connexionCollecteur(QHostAddress collecteur)
-{
-    socketLivestatus = new QTcpSocket(this);
-    socketLivestatus->connectToHost(collecteur, portLivestatus);
+void Collecteur::connexionCollecteur(QString collecteur)
+{ 
+    adresseCollecteur = collecteur;
+    socketLivestatus->connectToHost(adresseCollecteur, portLivestatus);
 }
 
-void Collecteur::obtenirHotes(QString *contenuSocket)
+void Collecteur::obtenirHotes(QString query)
 {
     QTextStream contenu(socketLivestatus);
-    QString requete = "GET hosts";
+    requete = query;
     contenu << requete << endl;
+    //contenu.setDevice(socketLivestatus);
+
+    lectureCollecteur();
 }
+
+void Collecteur::deconnexionCollecteur()
+{
+    socketLivestatus->close();
+}
+
+void Collecteur::connexionEtat()
+{
+    emit vers_IHM_connexionEtat();
+}
+
+void Collecteur::lectureCollecteur()
+{
+    QString texte;
+    while(socketLivestatus->canReadLine())
+    {
+        texte = socketLivestatus->readLine();
+    }
+    emit vers_IHM_texte(texte);
+}
+
+
+
+
 

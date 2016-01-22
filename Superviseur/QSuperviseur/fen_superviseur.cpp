@@ -15,14 +15,7 @@ fen_superviseur::fen_superviseur(QWidget *parent) : QDialog(parent), ui(new Ui::
     ui->W_Rectangle->setStyleSheet("background-color:green");
     ui->W_RectangleFailure->setStyleSheet("background-color:red");
 
-    Collecteur site;
-    QString *hotes;
-    hotes = new QString();
-
-    site.connexionCollecteur(QHostAddress("172.17.50.202"));
-    site.obtenirHotes(hotes);
-
-
+    site = new Collecteur(this);
 
     //rectangle = new QWidget(this);
     //rectangle->setGeometry(100,20,200,100);
@@ -42,3 +35,11 @@ fen_superviseur::~fen_superviseur()
 
 
 
+
+void fen_superviseur::on_pushButton_clicked()
+{
+    site->connexionCollecteur("172.17.50.202");
+    site->obtenirHotes("GET hosts\nColumns: host_name state");
+
+    site->deconnexionCollecteur();
+}
