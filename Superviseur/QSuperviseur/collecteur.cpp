@@ -3,9 +3,7 @@
 Collecteur::Collecteur(QObject *parent) : QObject(parent)
 {
     portLivestatus = 6557;
-    socketLivestatus = new QTcpSocket();
-
-
+    socketLivestatus = new QTcpSocket(this);
     connect(socketLivestatus, SIGNAL(connected()), this, SLOT(connexionEtat()));
     connect(socketLivestatus, SIGNAL(readyRead()), this, SLOT(lectureCollecteur()));
 }
@@ -21,9 +19,6 @@ void Collecteur::obtenirHotes(QString query)
     QTextStream contenu(socketLivestatus);
     requete = query;
     contenu << requete << endl;
-    //contenu.setDevice(socketLivestatus);
-
-    lectureCollecteur();
 }
 
 void Collecteur::deconnexionCollecteur()
@@ -38,12 +33,16 @@ void Collecteur::connexionEtat()
 
 void Collecteur::lectureCollecteur()
 {
-    QString texte;
     while(socketLivestatus->canReadLine())
     {
-        texte = socketLivestatus->readLine();
+        texte = socketLivestatus->readAll();
+        emit vers_IHM_texte(texte);
     }
-    emit vers_IHM_texte(texte);
+}
+
+QString Collecteur::recevoirContenu()
+{
+    return texte;
 }
 
 

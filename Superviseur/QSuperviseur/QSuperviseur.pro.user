@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.5.1, 2016-01-22T08:03:59. -->
+<!-- Written by QtCreator 3.5.1, 2016-01-25T13:01:52. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -227,8 +227,8 @@
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">QSuperviseur</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">QSuperviseur2</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:D:/SN2IR2016/PROJET_NAGIOS/John/Superviseur/QSuperviseur/QSuperviseur.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:D:/SN2IR2016/PROJET_NAGIOS/TCPWORK/John/Superviseur/QSuperviseur/QSuperviseur.pro</value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments"></value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">QSuperviseur.pro</value>
     <value type="bool" key="Qt4ProjectManager.Qt4RunConfiguration.UseDyldImageSuffix">false</value>
