@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>689</width>
+    <width>302</width>
     <height>281</height>
    </rect>
   </property>
@@ -16,10 +16,10 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>530</x>
+     <x>140</x>
      <y>240</y>
      <width>151</width>
-     <height>31</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="orientation">
@@ -32,42 +32,78 @@
   <widget class="QWidget" name="W_Rectangle" native="true">
    <property name="geometry">
     <rect>
-     <x>50</x>
+     <x>60</x>
      <y>60</y>
-     <width>181</width>
+     <width>71</width>
      <height>61</height>
     </rect>
    </property>
   </widget>
-  <widget class="QWidget" name="W_RectangleFailure" native="true">
+  <widget class="QLabel" name="LA_1">
    <property name="geometry">
     <rect>
-     <x>50</x>
+     <x>60</x>
+     <y>40</y>
+     <width>91</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="LA_2">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
      <y>130</y>
-     <width>181</width>
+     <width>91</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QWidget" name="W_Rectangle_2" native="true">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>150</y>
+     <width>71</width>
      <height>61</height>
     </rect>
    </property>
   </widget>
-  <widget class="QTextEdit" name="textEdit">
+  <widget class="QWidget" name="W_Rectangle_3" native="true">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>170</x>
      <y>60</y>
-     <width>391</width>
-     <height>131</height>
+     <width>71</width>
+     <height>61</height>
     </rect>
    </property>
-   <property name="readOnly">
-    <bool>true</bool>
+  </widget>
+  <widget class="QLabel" name="LA_3">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>40</y>
+     <width>91</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
   <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>250</y>
-     <width>181</width>
+     <y>240</y>
+     <width>83</width>
      <height>25</height>
     </rect>
    </property>

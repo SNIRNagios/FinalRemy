@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QString>
+#include <QMap>
 #include "collecteur.h"
 
 namespace Ui
@@ -15,6 +16,7 @@ class fen_superviseur : public QDialog
     Q_OBJECT
 public:
     explicit fen_superviseur(QWidget *parent = 0);
+    void traitement();
 
     ~fen_superviseur();
 private slots:
@@ -27,6 +29,8 @@ private:
     QLabel *statusLabel;
     Collecteur *site;
     QString contenu;
+    QStringList liste;
+    QMap<QString, QString> equipements;
 };
 
 #endif // FEN_SUPERVISEUR_H

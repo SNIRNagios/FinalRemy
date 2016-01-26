@@ -49,3 +49,4 @@ QString Collecteur::recevoirContenu()
 
 
 
+
