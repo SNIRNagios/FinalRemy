@@ -25,9 +25,14 @@ private slots:
 
 private:
     Ui::fen_superviseur *ui;
+
     QWidget *rectangle;
+
     QLabel *statusLabel;
+    QLabel *nomEquipement;
+
     Collecteur *site;
+
     QString contenu;
     QStringList liste;
     QMap<QString, QString> equipements;

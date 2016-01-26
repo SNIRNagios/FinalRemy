@@ -42,5 +42,20 @@ void fen_superviseur::traitement()
        equipements[liste[i]] = liste[i+1];
        i++;
     }
-}
 
+    for (int compteur = 0; compteur < (liste.size()-1)/2 ; compteur++)
+    {
+        rectangle = new QWidget(this);
+        nomEquipement = new QLabel(this);
+        ui->tableWidget->insertRow(compteur);
+    }
+
+
+
+    QMapIterator<QString, QString> it(equipements);
+    while(it.hasNext())
+    {
+        it.next();
+        ui->textEdit->append(it.key());
+    }
+}
