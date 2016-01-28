@@ -57,17 +57,75 @@ void fen_superviseur::traitement()
 
 void fen_superviseur::insertion()
 {
-    //Boucle for pour l'insertion de ligne dans le tableau en fonction du nombre d'équipements
-    for (int compteur = 0; compteur < (liste.size()-1)/2 ; compteur++)
-    {
-        ui->tableWidget->insertRow(compteur);//Insertion de ligne dans la tableWidget
+    int nom = 0;
+    int state = 1;
+    int compteurColonne = 0;
 
-        for (int j = 0; j < liste.size()-1; j++)//remplissage de la colonne
+    QString etats[2];
+    etats[0] = "fonctionnel";
+    etats[1] = "plus de détails";
+
+    QTableWidgetItem *item;
+    QString value;
+
+    int role =0;
+
+    //item = ui->tableWidget->item()
+
+    //Boucle for pour l'insertion de ligne dans le tableau en fonction du nombre d'équipements
+    for (int compteurLigne = 0; compteurLigne < (liste.size()-1)/2 ; compteurLigne++)
+    {
+        ui->tableWidget->insertRow(compteurLigne);//Insertion de ligne dans la tableWidget
+        //
+        ui->tableWidget->setItem(compteurLigne,compteurColonne, new QTableWidgetItem(liste[nom]));//remplissage de la colonne nom
+        nom = nom +2;
+        //
+        ui->tableWidget->setItem(compteurLigne,compteurColonne+1, new QTableWidgetItem(liste[state],role));//remplissage de la colonne Etat
+        state = state + 2;
+        role++;
+        //
+        if(ui->tableWidget->item(compteurLigne,compteurColonne+1)->data(0).toString() == "0")//Si la valeur de la cellule est 0
         {
-            int i = 0;
-            ui->tableWidget->setItem(compteur,i, new QTableWidgetItem(liste[i]));
-            i++;
+            //ESSAI 1
+            //QBrush vert;
+            //vert.setColor(Qt::green);
+            //ui->tableWidget->item(compteurLigne,compteurColonne+2)->setBackground(vert);
+
+            //ESSAI 2
+            ui->tableWidget->setItem(compteurLigne,compteurColonne+2, new QTableWidgetItem(etats[0]));
+            QColor couleurVerte(51,255,102);
+            ui->tableWidget->item(compteurLigne,compteurColonne+2)->setBackgroundColor(couleurVerte);
+
+            //ESSAI 3
+            //rectangle = new QWidget(this);
+            //rectangle->setStyleSheet("background-color: red");
+            //ui->tableWidget->setItem(compteurLigne,compteurColonne+2, new QTableWidgetItem(rectangle));
+
+            //AUTRES ESSAIS
+            //ui->tableWidget->item(compteurLigne,compteurColonne+2)->setBackground(Qt::green);
+            //ui->tableWidget->item(compteurLigne,compteurColonne+2)->setData(QVariant(QBrush(Qt::green)),Qt::BackgroundRole);
+            //ui->tableWidget->item(compteurLigne,compteurColonne+2)->setData(Qt::BackgroundRole, QVariant(QBrush(Qt::red)));
         }
+        else
+        {
+            ui->tableWidget->setItem(compteurLigne,compteurColonne+2, new QTableWidgetItem(etats[1]));
+            QColor couleurRouge(204,0,51);
+            ui->tableWidget->item(compteurLigne,compteurColonne+2)->setBackgroundColor(couleurRouge);
+        }
+
+
+
+
+
+
+        /*
+         * for (int compteurColonne = 0; compteurColonne < 2; compteurColonne++)//remplissage de la colonne
+        {
+
+            ui->tableWidget->setItem(compteurLigne,compteurColonne, new QTableWidgetItem(liste[indextab++]));//remplissage de la colonne nom
+            indextab++;
+        }
+        */
     }
 }
 
