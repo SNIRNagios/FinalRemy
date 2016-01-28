@@ -17,6 +17,7 @@ class fen_superviseur : public QDialog
 public:
     explicit fen_superviseur(QWidget *parent = 0);
     void traitement();
+    void insertion();
 
     ~fen_superviseur();
 private slots:
@@ -33,9 +34,13 @@ private:
 
     Collecteur *site;
 
-    QString contenu;
-    QStringList liste;
-    QMap<QString, QString> equipements;
+    QString contenu;//Variable qui prendra la valeur de la socket
+    QStringList liste;//Liste des hôtes et de leurs etats
+
+    QMap<QString, QString> equipements;//QMap associant le noms des hotes et leurs etats
+
+
+
 };
 
 #endif // FEN_SUPERVISEUR_H

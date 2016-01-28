@@ -17,6 +17,7 @@ fen_superviseur::~fen_superviseur()
 
 void fen_superviseur::on_BTN_getHosts_clicked()
 {
+    ui->BTN_getHosts->setEnabled(false);
     site->connexionCollecteur("172.17.50.202");
     site->obtenirHotes("GET hosts\nColumns: host_name state\n");
 }
@@ -43,19 +44,31 @@ void fen_superviseur::traitement()
        i++;
     }
 
+    QMapIterator<QString, QString> it(equipements);//Iterateur de la QMap pour la parcourir
+
+    while(it.hasNext())//Tant que l'iterateur posséde des items
+    {
+        it.next();//L'iterateur passe à l'item suivant
+        ui->textEdit->append(it.key());//On affiche la key de l'item dans le textEdit (avec un saut de ligne)
+    }
+
+    insertion();
+}
+
+void fen_superviseur::insertion()
+{
+    //Boucle for pour l'insertion de ligne dans le tableau en fonction du nombre d'équipements
     for (int compteur = 0; compteur < (liste.size()-1)/2 ; compteur++)
     {
-        rectangle = new QWidget(this);
-        nomEquipement = new QLabel(this);
-        ui->tableWidget->insertRow(compteur);
-    }
+        ui->tableWidget->insertRow(compteur);//Insertion de ligne dans la tableWidget
 
-
-
-    QMapIterator<QString, QString> it(equipements);
-    while(it.hasNext())
-    {
-        it.next();
-        ui->textEdit->append(it.key());
+        for (int j = 0; j < liste.size()-1; j++)//remplissage de la colonne
+        {
+            int i = 0;
+            ui->tableWidget->setItem(compteur,i, new QTableWidgetItem(liste[i]));
+            i++;
+        }
     }
 }
+
+
