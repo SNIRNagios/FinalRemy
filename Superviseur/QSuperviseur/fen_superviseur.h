@@ -24,8 +24,11 @@ private slots:
     void on_BTN_getHosts_clicked();
     QString obtenirSocket(QString);
 
+    void on_BTN_getServices_clicked();
+
 private:
     Ui::fen_superviseur *ui;
+    int demande;
 
     QWidget *rectangle;
 

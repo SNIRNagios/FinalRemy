@@ -18,6 +18,7 @@ private:
     QString cheminSocket;
     QString requete;
     QString texte;
+    int etat;
 public:
     explicit Collecteur(QObject *parent = 0);
     void deconnexionCollecteur();

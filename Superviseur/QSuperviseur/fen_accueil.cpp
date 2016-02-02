@@ -48,6 +48,8 @@ void FEN_Accueil::on_BTN_AccesSuperviseur_clicked()
     this->hide();
     fen_superviseur fenetreSuperviseur;
     fenetreSuperviseur.setModal(true);
-    //fenetreSuperviseur.setFixedSize(500,400);
+    fenetreSuperviseur.setFixedSize(560,738);
+
+
     fenetreSuperviseur.exec();
 }
