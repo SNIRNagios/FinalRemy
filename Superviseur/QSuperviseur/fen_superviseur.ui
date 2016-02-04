@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>NagiosReader</string>
+   <string>LES VALLONS DE LA TOUR - Superviseur</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -39,7 +39,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>172.17.50.202:6557</string>
+    <string>Veuillez-vous connecter en cliquant sur le bouton &quot;Connexion&quot;.</string>
    </property>
    <widget class="QTableWidget" name="TW_Hotes">
     <property name="enabled">
@@ -134,6 +134,9 @@
      </property>
     </widget>
     <widget class="QComboBox" name="comboBox">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <item>
       <property name="text">
        <string>172.17.50.202</string>
@@ -162,7 +165,22 @@
         <string notr="true">QPushButton#BTN_Connexion
 {
 	background:rgb(94, 94, 94);
-}</string>
+}
+
+QPushButton#BTN_Connexion:hover
+{
+	background:rgb(114, 140, 255);
+}
+
+QPushButton#BTN_Connexion:pressed
+{
+	
+}
+
+
+
+
+</string>
        </property>
        <property name="text">
         <string>Connexion</string>
@@ -171,6 +189,24 @@
      </item>
      <item>
       <widget class="QPushButton" name="BTN_Deconnexion">
+       <property name="styleSheet">
+        <string notr="true">QPushButton#BTN_Deconnexion
+{
+	background:rgb(114, 140, 255);
+	
+	
+}
+
+QPushButton#BTN_Deconnexion:hover
+{
+	background:rgb(94, 94, 94);
+}
+
+QPushButton#BTN_Deconnexion:pressed
+{
+	
+}</string>
+       </property>
        <property name="text">
         <string>Déconnexion</string>
        </property>
@@ -191,6 +227,9 @@
      <height>701</height>
     </rect>
    </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
    <property name="text">
     <string/>
    </property>
@@ -198,10 +237,24 @@
     <pixmap resource="ressources.qrc">:/img/img/white_wall.jpeg</pixmap>
    </property>
   </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>720</y>
+     <width>101</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>John Bruyere</string>
+   </property>
+  </widget>
   <zorder>label_2</zorder>
   <zorder>buttonBox</zorder>
   <zorder>GB_Contenu</zorder>
   <zorder>GB_Connexion</zorder>
+  <zorder>label_3</zorder>
  </widget>
  <resources>
   <include location="ressources.qrc"/>

@@ -12,6 +12,14 @@ void Collecteur::connexionCollecteur(QString collecteur)
 { 
     adresseCollecteur = collecteur;
     socketLivestatus->connectToHost(adresseCollecteur, portLivestatus);
+    /*if(socketLivestatus->waitForConnected(2000) == false)
+    {
+        qDebug() << "Impossible d'établir une connexion.";
+    }
+    else
+    {
+        qDebug() << "La connexion est un succés.";
+    }*/
 }
 
 void Collecteur::obtenirHotes(QString query)

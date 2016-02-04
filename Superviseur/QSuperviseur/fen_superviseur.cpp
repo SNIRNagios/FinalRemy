@@ -7,6 +7,9 @@ fen_superviseur::fen_superviseur(QWidget *parent) : QDialog(parent), ui(new Ui::
     statusLabel = new QLabel(this);
     site = new Collecteur(this);
     demande = 0;
+    portCollecteur = 6557;
+    portCollecteurStr = QString::number(portCollecteur);
+
     connect(site, SIGNAL(vers_IHM_texte(QString)),this,SLOT(obtenirSocket(QString)));
     ui->GB_Contenu->setEnabled(false);
 
@@ -210,6 +213,8 @@ void fen_superviseur::on_BTN_Connexion_clicked()
     ui->BTN_getHosts->setEnabled(true);
     ui->BTN_getServices->setEnabled(true);
 
+    adresseCollecteur = ui->comboBox->currentText();
+    ui->GB_Contenu->setTitle(adresseCollecteur + ":" + portCollecteurStr);
 }
 
 void fen_superviseur::on_BTN_Deconnexion_clicked()
@@ -219,6 +224,8 @@ void fen_superviseur::on_BTN_Deconnexion_clicked()
     ui->GB_Contenu->setEnabled(false);
     ui->BTN_Deconnexion->setEnabled(false);
     ui->BTN_Connexion->setEnabled(true);
+
+    ui->GB_Contenu->setTitle("Veuillez-vous connecter en cliquant sur le bouton \"Connexion\".");
 }
 
 void fen_superviseur::SupressionHote()

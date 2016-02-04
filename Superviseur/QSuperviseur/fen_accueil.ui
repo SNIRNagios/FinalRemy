@@ -53,6 +53,23 @@
      </item>
      <item>
       <widget class="QToolButton" name="BTN_AccesSuperviseur">
+       <property name="styleSheet">
+        <string notr="true">QToolButton#BTN_AccesSuperviseur
+{
+	background:rgb(255, 94, 105);
+	
+}
+
+QToolButton#BTN_AccesSuperviseur:hover
+{
+	background:rgb(114, 140, 255);
+}
+
+QToolButton#BTN_AccesSuperviseur:pressed
+{
+	background:rgb(94, 94, 94);
+}</string>
+       </property>
        <property name="text">
         <string>...</string>
        </property>
@@ -175,9 +192,9 @@
               <colorrole role="Button">
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
-                 <red>231</red>
+                 <red>255</red>
                  <green>94</green>
-                 <blue>152</blue>
+                 <blue>105</blue>
                 </color>
                </brush>
               </colorrole>
@@ -248,17 +265,17 @@
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
                  <red>255</red>
-                 <green>255</green>
-                 <blue>255</blue>
+                 <green>94</green>
+                 <blue>105</blue>
                 </color>
                </brush>
               </colorrole>
               <colorrole role="Window">
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
-                 <red>231</red>
+                 <red>255</red>
                  <green>94</green>
-                 <blue>152</blue>
+                 <blue>105</blue>
                 </color>
                </brush>
               </colorrole>
@@ -312,9 +329,9 @@
               <colorrole role="Button">
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
-                 <red>231</red>
+                 <red>255</red>
                  <green>94</green>
-                 <blue>152</blue>
+                 <blue>105</blue>
                 </color>
                </brush>
               </colorrole>
@@ -385,17 +402,17 @@
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
                  <red>255</red>
-                 <green>255</green>
-                 <blue>255</blue>
+                 <green>94</green>
+                 <blue>105</blue>
                 </color>
                </brush>
               </colorrole>
               <colorrole role="Window">
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
-                 <red>231</red>
+                 <red>255</red>
                  <green>94</green>
-                 <blue>152</blue>
+                 <blue>105</blue>
                 </color>
                </brush>
               </colorrole>
@@ -449,9 +466,9 @@
               <colorrole role="Button">
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
-                 <red>231</red>
+                 <red>255</red>
                  <green>94</green>
-                 <blue>152</blue>
+                 <blue>105</blue>
                 </color>
                </brush>
               </colorrole>
@@ -521,18 +538,18 @@
               <colorrole role="Base">
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
-                 <red>231</red>
+                 <red>255</red>
                  <green>94</green>
-                 <blue>152</blue>
+                 <blue>105</blue>
                 </color>
                </brush>
               </colorrole>
               <colorrole role="Window">
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
-                 <red>231</red>
+                 <red>255</red>
                  <green>94</green>
-                 <blue>152</blue>
+                 <blue>105</blue>
                 </color>
                </brush>
               </colorrole>
@@ -574,6 +591,24 @@
               </colorrole>
              </disabled>
             </palette>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#BTN_Connexion
+{
+	background:rgb(255, 94, 105);
+	
+}
+
+QPushButton#BTN_Connexion:hover
+{
+	background:rgb(94, 94, 94);
+}
+
+QPushButton#BTN_Connexion:pressed
+{
+	background:rgb(114, 140, 255);
+	
+}</string>
            </property>
            <property name="text">
             <string>Connexion</string>

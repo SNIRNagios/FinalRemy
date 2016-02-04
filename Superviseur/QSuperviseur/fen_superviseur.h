@@ -38,6 +38,9 @@ private slots:
 private:
     Ui::fen_superviseur *ui;
     int demande;
+    QString adresseCollecteur;
+    quint16 portCollecteur;
+    QString portCollecteurStr;
 
     QWidget *rectangle;
 
