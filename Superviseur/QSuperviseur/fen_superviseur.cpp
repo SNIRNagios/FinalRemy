@@ -8,6 +8,13 @@ fen_superviseur::fen_superviseur(QWidget *parent) : QDialog(parent), ui(new Ui::
     site = new Collecteur(this);
     demande = 0;
     connect(site, SIGNAL(vers_IHM_texte(QString)),this,SLOT(obtenirSocket(QString)));
+    ui->GB_Contenu->setEnabled(false);
+
+    initialisationTableHote();
+    initialisationTableService();
+
+    ui->GB_Contenu->setEnabled(false);
+    ui->BTN_Deconnexion->setEnabled(false);
 }
 
 fen_superviseur::~fen_superviseur()
@@ -21,6 +28,7 @@ void fen_superviseur::on_BTN_getHosts_clicked()
     site->connexionCollecteur("172.17.50.202");
     site->obtenirHotes("GET hosts\nColumns: host_name state\n");
     demande = 1;
+    ui->BTN_getHosts->setEnabled(false);
 }
 
 void fen_superviseur::on_BTN_getServices_clicked()
@@ -28,6 +36,7 @@ void fen_superviseur::on_BTN_getServices_clicked()
     site->connexionCollecteur("172.17.50.202");
     site->obtenirHotes("GET services\nColumns: host_name service_description state\nFilter: state != 0\n");
     demande = 2;
+    ui->BTN_getServices->setEnabled(false);
 }
 
 
@@ -47,7 +56,10 @@ void fen_superviseur::traitement()
 
     //On split la liste en plusieurs items à chaque rencontre de l'expression ";" et "\n"
     liste = contenu.split(caractere);
+}
 
+void fen_superviseur::afficherHote()
+{
     //Inserer et associer le nom et l'etat de l'équipement dans le QMAP
     for (int i = 0; i < liste.size()-1; i++)
     {
@@ -65,7 +77,10 @@ void fen_superviseur::traitement()
             ui->TE_Hotes->append(it.key());//On affiche la key de l'item dans le textEdit (avec un saut de ligne)
         }
     }
-
+    else
+    {
+        ui->TE_Hotes->append("No devices");
+    }
 }
 
 void fen_superviseur::insertion()
@@ -73,15 +88,6 @@ void fen_superviseur::insertion()
 
     if (demande == 1)
     {
-        ui->TW_Hotes->setColumnCount(3);
-        ui->TW_Hotes->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
-        ui->TW_Hotes->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
-
-
-        QStringList entete;
-        entete << "Equipement" << "Etat" << "Statut";
-        ui->TW_Hotes->setHorizontalHeaderLabels(entete);
-
         int nom = 0;
         int state = 1;
         int compteurColonne = 0;
@@ -93,7 +99,6 @@ void fen_superviseur::insertion()
 
         int role =0;
 
-        //item = ui->tableWidget->item()
 
         //Boucle for pour l'insertion de ligne dans le tableau en fonction du nombre d'équipements
         for (int compteurLigne = 0; compteurLigne < (liste.size()-1)/2 ; compteurLigne++)
@@ -122,20 +127,12 @@ void fen_superviseur::insertion()
                 ui->TW_Hotes->item(compteurLigne,compteurColonne+2)->setBackgroundColor(couleurRouge);
             }
         }
-        ui->TW_Hotes->setColumnHidden(1, true);
+
+        afficherHote();
+
     }
     else if (demande == 2)
     {
-        ui->TW_Services->setColumnCount(4);
-        ui->TW_Services->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
-        ui->TW_Services->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
-        ui->TW_Services->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
-
-
-        QStringList entete;
-        entete << "Equipement" << "Service "<< "Etat" << "Statut";
-        ui->TW_Services->setHorizontalHeaderLabels(entete);
-
         int nom = 0;
         int service = 1;
         int state = 2;
@@ -150,8 +147,6 @@ void fen_superviseur::insertion()
 
 
         int role =0;
-
-
 
         //Boucle for pour l'insertion de ligne dans le tableau en fonction du nombre d'équipements
         for (int compteurLigne = 0; compteurLigne < (liste.size()-1)/3 ; compteurLigne++)
@@ -202,9 +197,101 @@ void fen_superviseur::insertion()
             }
 
         }
-        ui->TW_Services->setColumnHidden(2, true);
+
     }
 }
 
 
+void fen_superviseur::on_BTN_Connexion_clicked()
+{
+    ui->BTN_Deconnexion->setEnabled(true);
+    ui->GB_Contenu->setEnabled(true);
+    ui->BTN_Connexion->setEnabled(false);
+    ui->BTN_getHosts->setEnabled(true);
+    ui->BTN_getServices->setEnabled(true);
 
+}
+
+void fen_superviseur::on_BTN_Deconnexion_clicked()
+{
+    SupressionHote();
+    SupressionService();
+    ui->GB_Contenu->setEnabled(false);
+    ui->BTN_Deconnexion->setEnabled(false);
+    ui->BTN_Connexion->setEnabled(true);
+}
+
+void fen_superviseur::SupressionHote()
+{
+    ui->TW_Hotes->setColumnHidden(1, false);
+
+    int nbColonneHote = ui->TW_Hotes->columnCount();
+    int nbLigneHote = ui->TW_Hotes->rowCount();
+
+
+    ui->TW_Hotes->clearContents();
+
+    for (int i = 0; i < nbColonneHote; i++)
+    {
+        ui->TW_Hotes->removeColumn(i);
+        for (int j = 0; j < nbLigneHote; j++)
+        {
+            ui->TW_Hotes->removeRow(j);
+        }
+    }
+
+    ui->TE_Hotes->clear();
+
+    initialisationTableHote();
+}
+
+void fen_superviseur::SupressionService()
+{
+    ui->TW_Services->setColumnHidden(2, false);
+
+    int nbColonneService = ui->TW_Services->columnCount();
+    int nbLigneService = ui->TW_Services->rowCount();
+
+
+    ui->TW_Services->clearContents();
+
+    for (int h = 0; h < nbColonneService; h++)
+    {
+        ui->TW_Services->removeColumn(h);
+        for (int j = 0; j < nbLigneService; j++)
+        {
+            ui->TW_Services->removeRow(j);
+        }
+    }
+
+    initialisationTableService();
+}
+
+
+
+void fen_superviseur::initialisationTableHote()
+{
+    //TABLE WIDGET HOTES/////////////////////////////////////////////////////////////
+    ui->TW_Hotes->setColumnCount(3);
+    ui->TW_Hotes->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    ui->TW_Hotes->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+    QStringList enteteHote;
+    enteteHote << "Equipement" << "Etat" << "Statut";
+    ui->TW_Hotes->setHorizontalHeaderLabels(enteteHote);
+    ui->TW_Hotes->setColumnHidden(1, true);
+    //FIN DE LA TABLE HOTES//////////////////////////////////////////////////////////
+}
+
+void fen_superviseur::initialisationTableService()
+{
+    //TABLE WIDGET SERVICE/////////////////////////////////////////////////////////////
+    ui->TW_Services->setColumnCount(4);//AJOUT DE 4 COLONNES///////////////////////////
+    ui->TW_Services->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    ui->TW_Services->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    ui->TW_Services->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+    QStringList enteteService;
+    enteteService << "Equipement" << "Service "<< "Etat" << "Statut";
+    ui->TW_Services->setHorizontalHeaderLabels(enteteService);
+    ui->TW_Services->setColumnHidden(2, true);
+    //FIN DE LA TABLE WIDGET SERVICES//////////////////////////////////////////////////
+}

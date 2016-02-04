@@ -18,6 +18,11 @@ public:
     explicit fen_superviseur(QWidget *parent = 0);
     void traitement();
     void insertion();
+    void SupressionHote();
+    void SupressionService();
+    void initialisationTableHote();
+    void initialisationTableService();
+    void afficherHote();
 
     ~fen_superviseur();
 private slots:
@@ -25,6 +30,10 @@ private slots:
     QString obtenirSocket(QString);
 
     void on_BTN_getServices_clicked();
+
+    void on_BTN_Connexion_clicked();
+
+    void on_BTN_Deconnexion_clicked();
 
 private:
     Ui::fen_superviseur *ui;
