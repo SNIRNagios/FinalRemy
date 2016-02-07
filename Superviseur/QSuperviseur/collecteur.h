@@ -8,6 +8,7 @@
 #include <QLabel>
 #include <QDebug>
 
+
 class Collecteur : public QObject
 {
     Q_OBJECT  

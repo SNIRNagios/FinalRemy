@@ -1,23 +1,43 @@
 #include "fen_superviseur.h"
 #include "ui_fen_superviseur.h"
 
+//Julien DESGOUTTE
+//Julien.DESGOUTTE@lesvallonsdelatour.fr
+
 fen_superviseur::fen_superviseur(QWidget *parent) : QDialog(parent), ui(new Ui::fen_superviseur)
 {
     ui->setupUi(this);
     statusLabel = new QLabel(this);
     site = new Collecteur(this);
+
+    //CREATION DU TIMER
+    timer = new QTimer();
+
+    connect(timer, SIGNAL(timeout()), this, SLOT(interrogation()));
+    //FIN DU TIMER
+
     demande = 0;
+    k = 0;
+
     portCollecteur = 6557;
     portCollecteurStr = QString::number(portCollecteur);
 
     connect(site, SIGNAL(vers_IHM_texte(QString)),this,SLOT(obtenirSocket(QString)));
-    ui->GB_Contenu->setEnabled(false);
+    connect(ui->TW_Hotes, SIGNAL(cellClicked(int,int)),this,SLOT(analyseProblemeHote(int, int)));
+
+    ui->TW_Hotes->setEditTriggers(QAbstractItemView::EditTriggers(0));
+
+
 
     initialisationTableHote();
     initialisationTableService();
 
     ui->GB_Contenu->setEnabled(false);
     ui->BTN_Deconnexion->setEnabled(false);
+    ui->BTN_StopTimer->setEnabled(false);
+
+    ui->BTN_getHosts->hide();
+    ui->BTN_getServices->hide();
 }
 
 fen_superviseur::~fen_superviseur()
@@ -28,7 +48,8 @@ fen_superviseur::~fen_superviseur()
 
 void fen_superviseur::on_BTN_getHosts_clicked()
 {
-    site->connexionCollecteur("172.17.50.202");
+    adresseCollecteur = ui->comboBox->currentText();
+    site->connexionCollecteur(adresseCollecteur);
     site->obtenirHotes("GET hosts\nColumns: host_name state\n");
     demande = 1;
     ui->BTN_getHosts->setEnabled(false);
@@ -36,13 +57,12 @@ void fen_superviseur::on_BTN_getHosts_clicked()
 
 void fen_superviseur::on_BTN_getServices_clicked()
 {
-    site->connexionCollecteur("172.17.50.202");
+    adresseCollecteur = ui->comboBox->currentText();
+    site->connexionCollecteur(adresseCollecteur);
     site->obtenirHotes("GET services\nColumns: host_name service_description state\nFilter: state != 0\n");
     demande = 2;
     ui->BTN_getServices->setEnabled(false);
 }
-
-
 
 QString fen_superviseur::obtenirSocket(QString socketLivestatus)
 {
@@ -96,8 +116,8 @@ void fen_superviseur::insertion()
         int compteurColonne = 0;
 
         QString etats[2];
-        etats[0] = "UP";
-        etats[1] = "DOWN";
+        etats[0] = "ACTIF";
+        etats[1] = "NON-ACTIF";
 
 
         int role =0;
@@ -204,7 +224,6 @@ void fen_superviseur::insertion()
     }
 }
 
-
 void fen_superviseur::on_BTN_Connexion_clicked()
 {
     ui->BTN_Deconnexion->setEnabled(true);
@@ -212,6 +231,12 @@ void fen_superviseur::on_BTN_Connexion_clicked()
     ui->BTN_Connexion->setEnabled(false);
     ui->BTN_getHosts->setEnabled(true);
     ui->BTN_getServices->setEnabled(true);
+    ui->comboBox->setEnabled(false);
+    ui->GB_Interrogation->setEnabled(false);
+
+
+    ui->BTN_getHosts->show();
+    ui->BTN_getServices->show();
 
     adresseCollecteur = ui->comboBox->currentText();
     ui->GB_Contenu->setTitle(adresseCollecteur + ":" + portCollecteurStr);
@@ -224,6 +249,11 @@ void fen_superviseur::on_BTN_Deconnexion_clicked()
     ui->GB_Contenu->setEnabled(false);
     ui->BTN_Deconnexion->setEnabled(false);
     ui->BTN_Connexion->setEnabled(true);
+    ui->comboBox->setEnabled(true);
+    ui->GB_Interrogation->setEnabled(true);
+
+    ui->BTN_getHosts->hide();
+    ui->BTN_getServices->hide();
 
     ui->GB_Contenu->setTitle("Veuillez-vous connecter en cliquant sur le bouton \"Connexion\".");
 }
@@ -274,8 +304,6 @@ void fen_superviseur::SupressionService()
     initialisationTableService();
 }
 
-
-
 void fen_superviseur::initialisationTableHote()
 {
     //TABLE WIDGET HOTES/////////////////////////////////////////////////////////////
@@ -301,4 +329,122 @@ void fen_superviseur::initialisationTableService()
     ui->TW_Services->setHorizontalHeaderLabels(enteteService);
     ui->TW_Services->setColumnHidden(2, true);
     //FIN DE LA TABLE WIDGET SERVICES//////////////////////////////////////////////////
+}
+
+void fen_superviseur::chargerThemeSombre()
+{
+    QString fenetre = "QDialog#fen_superviseur{background: rgb(58, 58, 58);}";
+    QString btn_connexion = "QPushButton#BTN_Connexion{background:rgb(94, 94, 94);}QPushButton#BTN_Connexion:hover{background:rgb(114, 140, 255);}QPushButton#BTN_Connexion:pressed{}";
+    QString btn_deconnexion = "QPushButton#BTN_Deconnexion{background:rgb(114, 140, 255);}QPushButton#BTN_Deconnexion:hover{background:rgb(94, 94, 94);}QPushButton#BTN_Deconnexion:pressed{}";
+    QString gb_contenu = "QGroupBox#GB_Contenu{color:rgb(114, 140, 255);}";
+    QString gb_connexion = "QGroupBox#GB_Connexion{color:rgb(114,140,255);}";
+    //QString tab_hote = "QTableWidget#TW_Hotes::section{background-color:rgb(58, 58, 58);";
+    //QString tab_service = "QTableWidget#TW_Services{background-color:rgb(58, 58, 58);";
+
+    fen_superviseur::setStyleSheet(fenetre);
+    ui->BTN_Connexion->setStyleSheet(btn_connexion);
+    ui->BTN_Deconnexion->setStyleSheet(btn_deconnexion);
+    ui->GB_Contenu->setStyleSheet(gb_contenu);
+    ui->GB_Connexion->setStyleSheet(gb_connexion);
+
+}
+
+void fen_superviseur::on_toolButton_clicked()
+{
+    chargerThemeSombre();
+}
+
+void fen_superviseur::analyseProblemeHote(int ligne, int colonne)
+{
+    QMessageBox alerte;
+    alerte.setWindowTitle("Information");
+
+    if (ui->TW_Hotes->item(ligne,colonne)->data(0).toString() == "NON-ACTIF")
+    {
+        alerte.setText("L'envoi de ping sur " + ui->TW_Hotes->item(ligne,colonne-2)->data(0).toString() + " a échoué.\n\n"
+                       "• Vérifier que l'équipement est bien connecté.\n"
+                       "• Vérifier que l'équipement est bien en état de marche.\n"
+                       "• Vérifier les services ci-dessous.");
+        alerte.exec();
+
+    }
+
+
+}
+
+void fen_superviseur::interrogation()
+{
+
+
+    if (ui->comboBox->currentText().isEmpty())
+    {
+        indexCollecteur = 0;
+        ui->comboBox->setCurrentIndex(indexCollecteur);
+        nombreBoucle++;
+        ui->LA_Boucle->setText("Boucle : " + QString::number(nombreBoucle));
+    }
+    else
+    {
+        if(k==0)
+        {
+            ui->LCDN_Chrono->display(k);//on affiche la variable k sur le chronomètre
+            adresseCollecteur = ui->comboBox->currentText();//On récupére le texte de l'item courant de la combobox
+            ui->LA_Status->setText("Connexion à " + adresseCollecteur);//Le label de statut affiche un message
+            k++;//Incrémentation de la variable k
+            indexCollecteur++;
+
+
+        }
+        else if (k==frequence)
+        {
+            ui->LCDN_Chrono->display(k);//on affiche la variable k sur le chronomètre
+            ui->LA_Status->setText("Déconnexion de " + adresseCollecteur);//Le label de statut affiche un message
+            ui->comboBox->setCurrentIndex(indexCollecteur);
+
+
+            k = 0;//La variable k vaut zéro
+        }
+        else
+        {
+            ui->LCDN_Chrono->display(k);//on affiche la variable k sur le chronomètre
+            ui->LA_Status->setText("Connexion établie avec succés sur " + adresseCollecteur);//Le label de statut affiche un message
+            k++;//Incrémentation de la variable k
+        }
+    }
+}
+
+void fen_superviseur::on_BTN_Timer_clicked()
+{
+    frequence = ui->SB_Frequence->value();//La variable frequence récupére la valeur du spinbox
+    timer->start(1000);//On active le timer qui s'executera toutes les 1000 msec (donc 1 seconde)
+    adresseCollecteur = ui->comboBox->currentText();//On récupére le texte de l'item courant de la combobox
+    indexCollecteur = ui->comboBox->currentIndex();
+    nombreBoucle = 0;
+    ui->LA_Boucle->setText("Boucle : " + QString::number(nombreBoucle));
+
+
+    //Activation provisoire
+    ui->BTN_StopTimer->setEnabled(true);
+
+    //Désactivation provisoire
+    ui->BTN_Timer->setEnabled(false);
+    ui->GB_Connexion->setEnabled(false);
+    ui->SB_Frequence->setEnabled(false);
+}
+
+void fen_superviseur::on_BTN_StopTimer_clicked()
+{
+    timer->stop();//On arrête le timer en cours de fonctionnement
+    ui->LCDN_Chrono->display(0);//On initialise le timer avec la valeur zéro
+    ui->LA_Status->setText("");//Le label de status n'affiche rien
+    k = 0;//On remet la variable k à 0 pour pouvoir re-activer le timer sans aucun probléme.
+    ui->comboBox->setCurrentIndex(0);
+
+    //Désactivation provisoire
+    ui->SB_Frequence->setEnabled(true);
+    ui->BTN_StopTimer->setEnabled(false);
+
+    //Activation provisoire
+    ui->GB_Connexion->setEnabled(true);
+    ui->BTN_Timer->setEnabled(true);
 }

@@ -5,6 +5,9 @@
 #include <QLabel>
 #include <QString>
 #include <QMap>
+#include <QFile>
+#include <QMessageBox>
+#include <QTimer>
 #include "collecteur.h"
 
 namespace Ui
@@ -24,7 +27,10 @@ public:
     void initialisationTableService();
     void afficherHote();
 
+    void chargerThemeSombre();
+
     ~fen_superviseur();
+
 private slots:
     void on_BTN_getHosts_clicked();
     QString obtenirSocket(QString);
@@ -35,18 +41,32 @@ private slots:
 
     void on_BTN_Deconnexion_clicked();
 
+    void on_toolButton_clicked();
+
+    void interrogation();
+
+    void analyseProblemeHote(int ligne, int colonne);
+
+    void on_BTN_Timer_clicked();
+
+    void on_BTN_StopTimer_clicked();
+
 private:
     Ui::fen_superviseur *ui;
+
     int demande;
+    int frequence;
+    int nombreBoucle;
     QString adresseCollecteur;
+    int indexCollecteur;
+
     quint16 portCollecteur;
     QString portCollecteurStr;
 
     QWidget *rectangle;
-
+    QTimer *timer;
     QLabel *statusLabel;
     QLabel *nomEquipement;
-
     Collecteur *site;
 
     QString contenu;//Variable qui prendra la valeur de la socket
@@ -54,6 +74,7 @@ private:
 
     QMap<QString, QString> equipements;//QMap associant le noms des hotes et leurs etats
 
+    int k;
 
 
 };

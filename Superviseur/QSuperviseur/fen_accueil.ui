@@ -13,10 +13,6 @@
   <property name="windowTitle">
    <string>LES VALLONS DE LA TOUR - Accueil</string>
   </property>
-  <property name="windowIcon">
-   <iconset resource="ressources.qrc">
-    <normaloff>:/img/img/eye.ico</normaloff>:/img/img/eye.ico</iconset>
-  </property>
   <property name="documentMode">
    <bool>false</bool>
   </property>
@@ -56,7 +52,7 @@
        <property name="styleSheet">
         <string notr="true">QToolButton#BTN_AccesSuperviseur
 {
-	background:rgb(255, 94, 105);
+	background:rgb(186, 186, 186);
 	
 }
 
@@ -192,9 +188,9 @@ QToolButton#BTN_AccesSuperviseur:pressed
               <colorrole role="Button">
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
-                 <red>255</red>
-                 <green>94</green>
-                 <blue>105</blue>
+                 <red>186</red>
+                 <green>186</green>
+                 <blue>186</blue>
                 </color>
                </brush>
               </colorrole>
@@ -264,18 +260,18 @@ QToolButton#BTN_AccesSuperviseur:pressed
               <colorrole role="Base">
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
-                 <red>255</red>
-                 <green>94</green>
-                 <blue>105</blue>
+                 <red>186</red>
+                 <green>186</green>
+                 <blue>186</blue>
                 </color>
                </brush>
               </colorrole>
               <colorrole role="Window">
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
-                 <red>255</red>
-                 <green>94</green>
-                 <blue>105</blue>
+                 <red>186</red>
+                 <green>186</green>
+                 <blue>186</blue>
                 </color>
                </brush>
               </colorrole>
@@ -329,9 +325,9 @@ QToolButton#BTN_AccesSuperviseur:pressed
               <colorrole role="Button">
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
-                 <red>255</red>
-                 <green>94</green>
-                 <blue>105</blue>
+                 <red>186</red>
+                 <green>186</green>
+                 <blue>186</blue>
                 </color>
                </brush>
               </colorrole>
@@ -401,18 +397,18 @@ QToolButton#BTN_AccesSuperviseur:pressed
               <colorrole role="Base">
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
-                 <red>255</red>
-                 <green>94</green>
-                 <blue>105</blue>
+                 <red>186</red>
+                 <green>186</green>
+                 <blue>186</blue>
                 </color>
                </brush>
               </colorrole>
               <colorrole role="Window">
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
-                 <red>255</red>
-                 <green>94</green>
-                 <blue>105</blue>
+                 <red>186</red>
+                 <green>186</green>
+                 <blue>186</blue>
                 </color>
                </brush>
               </colorrole>
@@ -466,9 +462,9 @@ QToolButton#BTN_AccesSuperviseur:pressed
               <colorrole role="Button">
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
-                 <red>255</red>
-                 <green>94</green>
-                 <blue>105</blue>
+                 <red>186</red>
+                 <green>186</green>
+                 <blue>186</blue>
                 </color>
                </brush>
               </colorrole>
@@ -538,18 +534,18 @@ QToolButton#BTN_AccesSuperviseur:pressed
               <colorrole role="Base">
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
-                 <red>255</red>
-                 <green>94</green>
-                 <blue>105</blue>
+                 <red>186</red>
+                 <green>186</green>
+                 <blue>186</blue>
                 </color>
                </brush>
               </colorrole>
               <colorrole role="Window">
                <brush brushstyle="SolidPattern">
                 <color alpha="255">
-                 <red>255</red>
-                 <green>94</green>
-                 <blue>105</blue>
+                 <red>186</red>
+                 <green>186</green>
+                 <blue>186</blue>
                 </color>
                </brush>
               </colorrole>
@@ -595,7 +591,7 @@ QToolButton#BTN_AccesSuperviseur:pressed
            <property name="styleSheet">
             <string notr="true">QPushButton#BTN_Connexion
 {
-	background:rgb(255, 94, 105);
+	background:rgb(186, 186, 186);
 	
 }
 
