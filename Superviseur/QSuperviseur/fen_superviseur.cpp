@@ -34,9 +34,11 @@ fen_superviseur::fen_superviseur(QWidget *parent) : QDialog(parent), ui(new Ui::
     connect(timer, SIGNAL(timeout()), this, SLOT(interrogation()));//Le siganl timeout() et connecté au slot interrogation()
     connect(site, SIGNAL(vers_IHM_texte(QString)),this,SLOT(obtenirSocket(QString)));//Le signal vers_IHM_texte(QString) est connecté au slot ObtenirSocket(QString)
     connect(ui->TW_Hotes, SIGNAL(cellClicked(int,int)),this,SLOT(analyseProblemeHote(int, int)));//Le signal cellClicked(int,int)est connecté au slot analyseProblemeHote(int,int)
+    connect(ui->TW_Services, SIGNAL(cellClicked(int,int)), this, SLOT(analyseProblemeService(int,int)));//A COMMENTER
 
     //AUTRES
     ui->TW_Hotes->setEditTriggers(QAbstractItemView::EditTriggers(0));//On rend impossible l'édition des cellules de TW_Hotes
+    ui->TW_Services->setEditTriggers(QAbstractItemView::EditTriggers(0));
 
     //Appels de fonctions
     initialisationTableHote();//Appel de fonction pour initialiser TW_Hotes
@@ -164,7 +166,6 @@ return      Aucun
 */
 void fen_superviseur::insertion()
 {
-
     if (demande == 1)
     {
         int nom = 0;
@@ -225,7 +226,8 @@ void fen_superviseur::insertion()
         etats[4] = "UNKNOWN";
 
 
-        int role =0;
+        int role = 0;
+
 
         //Boucle for pour l'insertion de ligne dans le tableau en fonction du nombre d'équipements
         for (int compteurLigne = 0; compteurLigne < (liste.size()-1)/3 ; compteurLigne++)
@@ -274,9 +276,7 @@ void fen_superviseur::insertion()
                 QColor couleurRouge(204,0,51);
                 ui->TW_Services->item(compteurLigne,compteurColonne+3)->setBackgroundColor(couleurRouge);
             }
-
         }
-
     }
 }
 
@@ -331,6 +331,11 @@ void fen_superviseur::on_BTN_Deconnexion_clicked()
     ui->GB_Contenu->setTitle("Veuillez-vous connecter en cliquant sur le bouton \"Connexion\".");
 }
 
+/*
+résumé      Cette fonction publique sert à vider le contenu du QTableWidget TW_Hotes
+param       Aucun
+return      Aucun
+*/
 void fen_superviseur::SupressionHote()
 {
     ui->TW_Hotes->setColumnHidden(1, false);
@@ -355,6 +360,11 @@ void fen_superviseur::SupressionHote()
     initialisationTableHote();//Appel de la fonction initialisationTableService
 }
 
+/*
+résumé      Cette fonction publique sert à vider le contenu du QTableWidget TW_Services
+param       Aucun
+return      Aucun
+*/
 void fen_superviseur::SupressionService()
 {
     ui->TW_Services->setColumnHidden(2, false);//On rend visible la troisiéme colonne de TW_Service afin de pouvoir supprimer sont contenu
@@ -377,6 +387,12 @@ void fen_superviseur::SupressionService()
     initialisationTableService();//Appel de la fonction initialisationTableService
 }
 
+/*
+résumé      Cette fonction publique sert à initialiser la QTableWidget TW_Hotes avec un entête et un nombre de colonne pré-réglé.
+            Seul le nombre de ligne sera variable en fonction de nombre d'hôte configuré sur le collecteur distant à interroger..
+param       Aucun
+return      Aucun
+*/
 void fen_superviseur::initialisationTableHote()
 {
     ui->TW_Hotes->setColumnCount(3);//On ajoute 4 colonne à TW_Hotes
@@ -390,6 +406,12 @@ void fen_superviseur::initialisationTableHote()
     ui->TW_Hotes->setColumnHidden(1, true);//On cache la seconde colonne pour une raison ergonomique
 }
 
+/*
+résumé      Cette fonction publique sert à initialiser la QTableWidget TW_Services avec un entête et un nombre de colonne pré-réglé.
+            Seul le nombre de ligne sera variable en fonction de nombre d'hôte et des services configurés sur le collecteur distant à interroger.
+param       Aucun
+return      Aucun
+*/
 void fen_superviseur::initialisationTableService()
 {
     ui->TW_Services->setColumnCount(4);//On ajoute 4 colonne à TW_Services
@@ -405,6 +427,11 @@ void fen_superviseur::initialisationTableService()
 
 }
 
+/*
+résumé      Cette fonction publique sert uniquement à charger un theme en fonction de notre séléction.
+param       Aucun
+return      Aucun
+*/
 void fen_superviseur::chargerThemeSombre()
 {
     QString fenetre = "QDialog#fen_superviseur{background: rgb(58, 58, 58);}";
@@ -423,29 +450,117 @@ void fen_superviseur::chargerThemeSombre()
 
 }
 
+/*
+résumé      Ce slot est activé lorsqu'un utilisateur clique sur le toolButton.
+            Il appel la méthode "chargerTheme()".
+param       Aucun
+return      Aucun
+*/
 void fen_superviseur::on_toolButton_clicked()
 {
     chargerThemeSombre();
 }
 
+/*
+résumé      Cette fonction publique crée une fenetre d'alerte et affiche un message d'aide sur l'erreur d'hôte "NON-ACTIF" qui apparaitra lors d'un
+            clic sur la cellule concernée.
+param       ligne [int], colonne [int]
+return      Aucun
+*/
 void fen_superviseur::analyseProblemeHote(int ligne, int colonne)
 {
     QMessageBox alerte;//Création d'une QMessageBox nommé alerte
-    alerte.setWindowTitle("Information");//On attribut un titre au QMessageBox
+    alerte.setWindowTitle("LES VALLONS DE LA TOUR - Information");//On attribut un titre au QMessageBox
 
     if (ui->TW_Hotes->item(ligne,colonne)->data(0).toString() == "NON-ACTIF")//Si, lors du clique, le contenu de l'item vaut "NON-ACTIF" alors
     {
         alerte.setText("L'envoi de ping sur " + ui->TW_Hotes->item(ligne,colonne-2)->data(0).toString() + " a échoué.\n\n"
                        "• Vérifier que l'équipement est bien connecté.\n"
                        "• Vérifier que l'équipement est bien en état de marche.\n"
-                       "• Vérifier les services ci-dessous.");//On place un message d'aide dans la QMessageBox alerte
+                       "• Vérifier les services ci-dessous pour plus de détails.");//On place un message d'aide dans la QMessageBox alerte
         alerte.exec();//On excute la QMessageBox
+    }
+
+
+}
+
+/*
+résumé      Cette fonction publique crée une fenetre d'alerte et affiche un message d'aide sur les erreurs des services qui apparaitra lors d'un
+            clic sur la cellule de couleur concernée.
+param       ligne [int], colonne [int]
+return      Aucun
+*/
+void fen_superviseur::analyseProblemeService(int ligne, int colonne)
+{
+    QMessageBox alerte;
+
+
+    QString statut = ui->TW_Services->item(ligne,colonne)->data(0).toString();
+
+
+    if(statut == "UNKNOWN")
+    {
+        QString service = ui->TW_Services->item(ligne,colonne-2)->data(0).toString();
+        QString hote = ui->TW_Services->item(ligne, colonne-3)->data(0).toString() ;
+        alerte.setWindowTitle("Raison inconnue");
+        alerte.setIcon(QMessageBox::Information);
+
+        if(service == "Uptime")
+        {
+            alerte.setText("Le service " + service + " semble rencontrer un probléme sur " + hote + ".\n\n");
+            alerte.exec();
+        }
+        else if (service == "check_snmp")
+        {
+            alerte.setText("Le service " + service + " semble rencontrer un probléme\nsur " + hote  + ".\n\n"+
+                           "Recomandations : \n\n"
+                           "    - Vérifier que l'équipement est sous tension.\n"
+                           "    - Vérifier les branchements.\n"
+                           "    - Vérifier la table d'adressage.\n"
+                           "    - Mauvais OID spécifié.\n"
+                           "    - Snmp est mal configuré sur l'équipement.\n");
+            alerte.exec();
+        }
+        else if (service == "check_snmp_2")
+        {
+            alerte.setText("Le service " + service + " semble rencontrer un probléme\nsur " + hote + ".\n\n"+
+                           "    - Vérifier que l'équipement est sous tension.\n"
+                           "    - Vérifier les branchements.\n"
+                           "    - Vérifier la table d'adressage.\n"
+                           "    - Mauvais OID spécifié.\n"
+                           "    - Snmp est mal configuré sur l'équipement.\n");
+            alerte.exec();
+        }
+        else
+        {
+            alerte.setText("Autre");
+            alerte.exec();
+        }
+    }
+    else if(statut == "WARNING")
+    {
+
+        QString service = ui->TW_Services->item(ligne,colonne-2)->data(0).toString();
+        QString hote = ui->TW_Services->item(ligne, colonne-3)->data(0).toString() ;
+        alerte.setIcon(QMessageBox::Warning);
+        alerte.setWindowTitle("Attention");
+        if(service == "Root Partition")
+        {
+            alerte.setText("L'espace disque de " + hote + " est faible.\nIl est recommandé libérer de la place pour faire fonctionner le superviseur.");
+            alerte.exec();
+        }
 
     }
 
 
 }
 
+/*
+résumé      Cette fonction publique intérroge un par un les collecteurs configurés dans le fichier de configuration (.xml) en fonction d'une période modifiable.
+            L'intérrogation s'effectue en boucle.
+param       Aucun
+return      Aucun
+*/
 void fen_superviseur::interrogation()
 {
     if (ui->comboBox->currentText().isEmpty())//Si l'item du combobox est une chaine de caractére vide
@@ -464,6 +579,12 @@ void fen_superviseur::interrogation()
             ui->LA_Status->setText("Connexion à " + adresseCollecteur);//Le label de statut affiche un message
             k++;//Incrémentation de la variable k
             indexCollecteur++;//Incrémentation de l'indexCollecteur
+            ui->GB_Contenu->setTitle(adresseCollecteur +":6557");
+            hotes();
+
+
+
+
 
 
         }
@@ -472,6 +593,11 @@ void fen_superviseur::interrogation()
             ui->LCDN_Chrono->display(k);//on affiche la variable k sur le chronomètre
             ui->LA_Status->setText("Déconnexion de " + adresseCollecteur);//Le label de statut affiche un message
             ui->comboBox->setCurrentIndex(indexCollecteur);
+            deconnexion();
+            SupressionHote();
+            SupressionService();
+            initialisationTableHote();
+            initialisationTableService();
 
 
             k = 0;//La variable k vaut zéro
@@ -481,10 +607,21 @@ void fen_superviseur::interrogation()
             ui->LCDN_Chrono->display(k);//on affiche la variable k sur le chronomètre
             ui->LA_Status->setText("Connexion établie avec succés sur " + adresseCollecteur);//Le label de statut affiche un message
             k++;//Incrémentation de la variable k
+
+            if (count == 0)
+            {
+                services();
+            }
+
         }
     }
 }
 
+/*
+résumé      Ce slot est activé lorsqu'un utilisateur clique sur le bouton "Commencer". Il lance le timer toutes les secondes jusqu'à ce que la fonction stop est appelée.
+param       Aucun
+return      Aucun
+*/
 void fen_superviseur::on_BTN_Timer_clicked()
 {
     frequence = ui->SB_Frequence->value();//La variable frequence récupére la valeur du spinbox
@@ -493,6 +630,7 @@ void fen_superviseur::on_BTN_Timer_clicked()
     indexCollecteur = ui->comboBox->currentIndex();
     nombreBoucle = 0;
     ui->LA_Boucle->setText("Boucle : " + QString::number(nombreBoucle));
+    ui->GB_Contenu->setEnabled(true);
 
 
     //Activation provisoire
@@ -504,6 +642,12 @@ void fen_superviseur::on_BTN_Timer_clicked()
     ui->SB_Frequence->setEnabled(false);
 }
 
+/*
+résumé      Ce slot est activé lorsqu'un utilisateur clique sur le bouton "Arrêter". Il fait appel à la fonction stop() de la classe QTimer.
+            Le chronometre s'arrete et des widgets sont de nouveau accéssible.
+param       Aucun
+return      Aucun
+*/
 void fen_superviseur::on_BTN_StopTimer_clicked()
 {
     timer->stop();//On arrête le timer en cours de fonctionnement
@@ -519,4 +663,30 @@ void fen_superviseur::on_BTN_StopTimer_clicked()
     //Activation provisoire
     ui->GB_Connexion->setEnabled(true);
     ui->BTN_Timer->setEnabled(true);
+}
+
+void fen_superviseur::hotes()
+{
+    adresseCollecteur = ui->comboBox->currentText();
+    site->connexionCollecteur(adresseCollecteur);
+    site->obtenirHotes("GET hosts\nColumns: host_name state\n");
+    demande = 1;
+    count = 0;
+    ui->BTN_getHosts->setEnabled(false);
+}
+
+void fen_superviseur::services()
+{
+    adresseCollecteur = ui->comboBox->currentText();
+    site->connexionCollecteur(adresseCollecteur);
+    site->obtenirHotes("GET services\nColumns: host_name service_description state\nFilter: state != 0\n");
+    demande = 2;
+    count = 1;
+    ui->BTN_getServices->setEnabled(false);
+}
+
+void fen_superviseur::deconnexion()
+{
+    count = 0;
+    site->deconnexionCollecteur();
 }

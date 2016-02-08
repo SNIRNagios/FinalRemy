@@ -137,6 +137,16 @@ QPushButton#BTN_getServices:hover
      </rect>
     </property>
    </widget>
+   <widget class="QLCDNumber" name="LCDN_Chrono">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>10</y>
+      <width>64</width>
+      <height>23</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="GB_Connexion">
    <property name="geometry">
@@ -253,12 +263,7 @@ QPushButton#BTN_Deconnexion:pressed
     </item>
     <item>
      <property name="text">
-      <string>127.0.0.1</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Autres collecteurs</string>
+      <string>172.17.50.203</string>
      </property>
     </item>
    </widget>
@@ -312,13 +317,29 @@ QPushButton#BTN_Deconnexion:pressed
      <rect>
       <x>10</x>
       <y>70</y>
-      <width>158</width>
+      <width>161</width>
       <height>25</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QPushButton" name="BTN_Timer">
+       <property name="styleSheet">
+        <string notr="true">QPushButton#BTN_Timer
+{
+	background:rgb(186, 186, 186);
+}
+
+QPushButton#BTN_Timer:hover
+{
+	background:rgb(94, 94, 94);
+}
+
+QPushButton#BTN_Timer:pressed
+{
+	
+}</string>
+       </property>
        <property name="text">
         <string>Commencer</string>
        </property>
@@ -326,6 +347,24 @@ QPushButton#BTN_Deconnexion:pressed
      </item>
      <item>
       <widget class="QPushButton" name="BTN_StopTimer">
+       <property name="styleSheet">
+        <string notr="true">QPushButton#BTN_StopTimer
+{
+	background:rgb(186, 186, 186);
+	
+	
+}
+
+QPushButton#BTN_StopTimer:hover
+{
+	background:rgb(94, 94, 94);
+}
+
+QPushButton#BTN_StopTimer:pressed
+{
+	
+}</string>
+       </property>
        <property name="text">
         <string>Arrêter</string>
        </property>
@@ -339,7 +378,7 @@ QPushButton#BTN_Deconnexion:pressed
       <x>10</x>
       <y>30</y>
       <width>161</width>
-      <height>20</height>
+      <height>18</height>
      </rect>
     </property>
     <property name="orientation">
@@ -347,7 +386,7 @@ QPushButton#BTN_Deconnexion:pressed
     </property>
     <widget class="QLabel" name="LA_Frequence">
      <property name="text">
-      <string>Frequence</string>
+      <string>Période de connexion</string>
      </property>
     </widget>
     <widget class="QSpinBox" name="SB_Frequence">
@@ -382,23 +421,13 @@ QPushButton#BTN_Deconnexion:pressed
     <enum>Qt::Vertical</enum>
    </property>
   </widget>
-  <widget class="QLCDNumber" name="LCDN_Chrono">
-   <property name="geometry">
-    <rect>
-     <x>490</x>
-     <y>100</y>
-     <width>64</width>
-     <height>23</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="LA_Boucle">
    <property name="geometry">
     <rect>
      <x>490</x>
      <y>80</y>
-     <width>47</width>
-     <height>13</height>
+     <width>71</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="text">
