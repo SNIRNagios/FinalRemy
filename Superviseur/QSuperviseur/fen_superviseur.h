@@ -30,6 +30,7 @@ public:
     void services();
     void deconnexion();
     void chargerThemeSombre();
+    void Filtre(QString choix);
     ~fen_superviseur();
 private slots:
     void on_BTN_getHosts_clicked();
@@ -53,6 +54,7 @@ private:
     int indexCollecteur;
     quint16 portCollecteur;
     QString portCollecteurStr;
+    QString filtre;
     QWidget *rectangle;
     QTimer *timer;
     QLabel *statusLabel;

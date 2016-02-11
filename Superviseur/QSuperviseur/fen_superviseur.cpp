@@ -39,6 +39,7 @@ fen_superviseur::fen_superviseur(QWidget *parent) : QDialog(parent), ui(new Ui::
     //AUTRES
     ui->TW_Hotes->setEditTriggers(QAbstractItemView::EditTriggers(0));//On rend impossible l'édition des cellules de TW_Hotes
     ui->TW_Services->setEditTriggers(QAbstractItemView::EditTriggers(0));
+    ui->textEdit->append("Logs ["+ ui->comboBox->currentText() + "] : ");
 
     //Appels de fonctions
     initialisationTableHote();//Appel de fonction pour initialiser TW_Hotes
@@ -655,6 +656,8 @@ void fen_superviseur::on_BTN_StopTimer_clicked()
     ui->LA_Status->setText("");//Le label de statut n'affiche rien
     k = 0;//On remet la variable k à 0 pour pouvoir re-activer le timer sans aucun probléme.
     ui->comboBox->setCurrentIndex(0);
+    SupressionHote();
+    SupressionService();
 
     //Désactivation provisoire
     ui->SB_Frequence->setEnabled(true);
@@ -679,7 +682,8 @@ void fen_superviseur::services()
 {
     adresseCollecteur = ui->comboBox->currentText();
     site->connexionCollecteur(adresseCollecteur);
-    site->obtenirHotes("GET services\nColumns: host_name service_description state\nFilter: state != 0\n");
+    Filtre(ui->comboBox_2->currentText());
+    site->obtenirHotes("GET services\nColumns: host_name service_description state" + filtre);
     demande = 2;
     count = 1;
     ui->BTN_getServices->setEnabled(false);
@@ -689,4 +693,27 @@ void fen_superviseur::deconnexion()
 {
     count = 0;
     site->deconnexionCollecteur();
+}
+
+void fen_superviseur::Filtre(QString choix)
+{
+    choix = ui->comboBox_2->currentText();
+
+
+    if (choix == "Critique")
+    {
+       filtre = "\nFilter: state = 2\n";
+    }
+    else if (choix == "Danger")
+    {
+        filtre = "\nFilter: state = 1\n";
+    }
+    else if (choix == "Erreurs")
+    {
+        filtre = "\nFilter: state != 0\n";
+    }
+    else if(choix == "Inconnu")
+    {
+        filtre = "\nFilter: state = 3\n";
+    }
 }
