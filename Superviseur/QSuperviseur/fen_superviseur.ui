@@ -288,11 +288,6 @@ QPushButton#BTN_Deconnexion:pressed
     <property name="styleSheet">
      <string notr="true"/>
     </property>
-    <item>
-     <property name="text">
-      <string>172.17.50.202</string>
-     </property>
-    </item>
    </widget>
   </widget>
   <widget class="QToolButton" name="toolButton">

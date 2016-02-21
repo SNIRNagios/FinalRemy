@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<superviseur>
+    <collecteur id="1" name="Lycee Edouard Branly" adresse="172.17.50.202"></collecteur>
+    <collecteur id="2" name="Ecole Primaire Lyon 5" adresse="172.17.50.203"></collecteur>
+    <collecteur id="3" name="Bibliothéque Lyon 5" adresse="172.17.50.202"></collecteur>    
+</superviseur>

@@ -22,11 +22,14 @@ fen_superviseur::fen_superviseur(QWidget *parent) : QDialog(parent), ui(new Ui::
     statusLabel = new QLabel(this);
     site = new Collecteur(this);
 
+
     //Création du timer
     timer = new QTimer();
 
     demande = 0;
     k = 0;
+    chemin = "C://SNIR_PROJET/John/Superviseur/QSuperviseur/FichierSuperviseur.xml";
+    fichierConfiguration.setFileName(chemin);
     portCollecteur = 6557;
     portCollecteurStr = QString::number(portCollecteur);//convertir le port en QString
 
@@ -44,6 +47,7 @@ fen_superviseur::fen_superviseur(QWidget *parent) : QDialog(parent), ui(new Ui::
     //Appels de fonctions
     initialisationTableHote();//Appel de fonction pour initialiser TW_Hotes
     initialisationTableService();//Appel de fonction pour initialiser TW_Services
+    LectureFichierConfiguration();
 
     //Désactivation provisoire
     ui->GB_Contenu->setEnabled(false);
@@ -65,6 +69,60 @@ fen_superviseur::~fen_superviseur()
     delete site;
     delete timer;
 }
+
+int fen_superviseur::LectureFichierConfiguration()
+{
+
+    QDomDocument document;
+    QMessageBox alerte;
+    alerte.setWindowTitle("Fichier de configuration non-reconnu");
+    alerte.setIcon(QMessageBox::Critical);
+
+    if(!fichierConfiguration.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QString erreurMessage = fichierConfiguration.errorString();
+        alerte.setText("Impossible d'ouvrir le fichier : " + erreurMessage + ".\nVeuillez vérifier l'emplacement du fichier de configuration FichierSuperviseur.xml.");
+        alerte.exec();
+
+        return -1;
+    }
+    else
+    {
+        if(!document.setContent(&fichierConfiguration))
+        {
+
+            alerte.setText("Impossible de charger le fichier.");
+            return -1;
+        }
+        fichierConfiguration.close();
+    }
+    QDomElement root = document.firstChildElement();
+
+    lister(root, "collecteur", "adresse");
+
+    qDebug() << "Lecture xml terminée";
+    return 1;
+}
+
+void fen_superviseur::lister(QDomElement root, QString tagname, QString attribute)
+{
+    QDomNodeList items;
+    QDomElement itemele;
+    items = root.elementsByTagName(tagname);
+    qDebug() << "Nombre d'items " << items.count();
+
+    for (int i = 0; i < items.count(); i++)
+    {
+        QDomNode itemNode = items.at(i);
+        if(itemNode.isElement())
+        {
+            itemele = itemNode.toElement();
+            ui->comboBox->addItem(itemele.attribute(attribute));
+        }
+
+    }
+}
+
 
 /*
 résumé      Ce slot est activé lorsque qu'un utilisateur clique sur "Obtenir les Hôtes".

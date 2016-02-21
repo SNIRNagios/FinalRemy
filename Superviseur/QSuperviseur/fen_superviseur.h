@@ -8,6 +8,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QTimer>
+#include <QtXml>
 #include "collecteur.h"
 
 namespace Ui
@@ -31,10 +32,13 @@ public:
     void deconnexion();
     void chargerThemeSombre();
     void Filtre(QString choix);
+    int LectureFichierConfiguration();
+    void lister(QDomElement root, QString tagname, QString attribute);
     ~fen_superviseur();
 private slots:
-    void on_BTN_getHosts_clicked();
     QString obtenirSocket(QString);
+
+    void on_BTN_getHosts_clicked();
     void on_BTN_getServices_clicked();
     void on_BTN_Connexion_clicked();
     void on_BTN_Deconnexion_clicked();
@@ -46,23 +50,31 @@ private slots:
     void on_BTN_StopTimer_clicked();
 private:
     Ui::fen_superviseur *ui;
-    int demande;
-    int frequence;
-    int nombreBoucle;
-    int count;
-    QString adresseCollecteur;
-    int indexCollecteur;
-    quint16 portCollecteur;
-    QString portCollecteurStr;
-    QString filtre;
     QWidget *rectangle;
     QTimer *timer;
     QLabel *statusLabel;
     QLabel *nomEquipement;
     Collecteur *site;
+
+
+    int demande;
+    int frequence;
+    int nombreBoucle;
+    int count;
+    int indexCollecteur;
+    int k;
+
+    quint16 portCollecteur;
+
+    QString adresseCollecteur;
+    QString portCollecteurStr;
+    QString chemin;
+    QString filtre;
     QString contenu;//Variable qui prendra la valeur de la socket
+
     QStringList liste;//Liste des hôtes et de leurs etats
     QMap<QString, QString> equipements;//QMap associant le noms des hotes et leurs etats
-    int k;
+    QFile fichierConfiguration;
+
 };
 #endif // FEN_SUPERVISEUR_H
