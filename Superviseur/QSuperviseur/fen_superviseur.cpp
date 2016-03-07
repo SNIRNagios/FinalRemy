@@ -28,7 +28,7 @@ fen_superviseur::fen_superviseur(QWidget *parent) : QDialog(parent), ui(new Ui::
 
     demande = 0;
     k = 0;
-    chemin = "C://SNIR_PROJET/John/Superviseur/QSuperviseur/FichierSuperviseur.xml";
+    chemin = "C://ProgramData/superviseur/FichierSuperviseur.xml";
     fichierConfiguration.setFileName(chemin);
     portCollecteur = 6557;
     portCollecteurStr = QString::number(portCollecteur);//convertir le port en QString

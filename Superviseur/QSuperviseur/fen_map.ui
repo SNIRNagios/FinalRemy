@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>fen_map</class>
+ <widget class="QDialog" name="fen_map">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>698</width>
+    <height>234</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Vue d'ensemble</string>
+  </property>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>10</y>
+     <width>61</width>
+     <height>191</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="couche"/>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>10</y>
+     <width>160</width>
+     <height>191</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="coucheNom"/>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

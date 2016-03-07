@@ -1,6 +1,7 @@
 #include "fen_accueil.h"
 #include "fen_superviseur.h"
 #include "ui_fen_accueil.h"
+#include "fen_map.h"
 
 FEN_Accueil::FEN_Accueil(QWidget *parent) :
     QMainWindow(parent),
@@ -45,11 +46,15 @@ void FEN_Accueil::on_BTN_Connexion_clicked()
 
 void FEN_Accueil::on_BTN_AccesSuperviseur_clicked()
 {
-    this->hide();
+    /*this->hide();
     fen_superviseur fenetreSuperviseur;
     fenetreSuperviseur.setModal(true);
     fenetreSuperviseur.setFixedSize(872,738);
+    fenetreSuperviseur.exec();*/
 
-
-    fenetreSuperviseur.exec();
+    this->hide();
+    fen_map supervision;
+    supervision.setModal(true);
+    supervision.setFixedSize(698,220);
+    supervision.exec();
 }
