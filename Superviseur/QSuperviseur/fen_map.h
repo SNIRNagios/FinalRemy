@@ -22,23 +22,42 @@ class fen_map : public QDialog
 {
     Q_OBJECT
 
+signals:
+    void siteTraiteValider();
+    void siteTraiteErreur();
 public:
     explicit fen_map(QWidget *parent = 0);
     int LectureFichierConfiguration();
-    int Lister(QDomElement root, QString tagname, QString attribute);
+    void Lister(QDomElement root, QString tagname, QString attribute);
+
+
+
     ~fen_map();
 
 private:
     Ui::fen_map *ui;
+    Collecteur *site;
     QFile fichierConfiguration;
     QStringList listeAdresse;
     QStringList listeNom;
     QString chemin;
     QString demande;
-    //QWidget *rectangle;
-    //QPushButton *rectangleButton;
-    QHBoxLayout *couche;
+    int nombreCollecteur;
+    int k;
+
+
     QList<QPushButton*> rectangle;
+    QStringList contenu;//Variable qui prendra la valeur de la socket
+
+    QTimer *timer;
+
+private slots:
+    void alerte();
+    void obtenirSocket(QString);
+    void Validation();
+    void Erreur();
+    void Interrogation();
+    void on_pushButton_clicked();
 };
 
 #endif // FEN_MAP_H

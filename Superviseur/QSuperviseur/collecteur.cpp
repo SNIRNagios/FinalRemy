@@ -6,6 +6,7 @@ Collecteur::Collecteur(QObject *parent) : QObject(parent)
     socketLivestatus = new QTcpSocket(this);
     connect(socketLivestatus, SIGNAL(connected()), this, SLOT(connexionEtat()));
     connect(socketLivestatus, SIGNAL(readyRead()), this, SLOT(lectureCollecteur()));
+
 }
 
 void Collecteur::connexionCollecteur(QString collecteur)

@@ -55,6 +55,6 @@ void FEN_Accueil::on_BTN_AccesSuperviseur_clicked()
     this->hide();
     fen_map supervision;
     supervision.setModal(true);
-    supervision.setFixedSize(698,220);
+    //supervision.setFixedSize(400,250);
     supervision.exec();
 }
