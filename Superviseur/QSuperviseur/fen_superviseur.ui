@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>872</width>
-    <height>738</height>
+    <width>950</width>
+    <height>392</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>LES VALLONS DE LA TOUR - Superviseur</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="ressources.qrc">
+    <normaloff>:/img/img/LOGOFEN.png</normaloff>:/img/img/LOGOFEN.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog#fen_superviseur
@@ -38,10 +42,10 @@
   <widget class="QGroupBox" name="GB_Contenu">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>130</x>
      <y>130</y>
-     <width>841</width>
-     <height>571</height>
+     <width>781</width>
+     <height>251</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -51,7 +55,7 @@
 }</string>
    </property>
    <property name="title">
-    <string>Veuillez-vous connecter en cliquant sur le bouton &quot;Connexion&quot;.</string>
+    <string>Débutez le programme en cliquant sur &quot;Commencer&quot;</string>
    </property>
    <widget class="QTableWidget" name="TW_Hotes">
     <property name="enabled">
@@ -59,19 +63,22 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>50</y>
-      <width>371</width>
+      <width>281</width>
       <height>181</height>
      </rect>
     </property>
    </widget>
    <widget class="QTextEdit" name="TE_Hotes">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>300</x>
       <y>70</y>
-      <width>121</width>
+      <width>131</width>
       <height>161</height>
      </rect>
     </property>
@@ -82,7 +89,7 @@
    <widget class="QPushButton" name="BTN_getHosts">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>20</y>
       <width>111</width>
       <height>23</height>
@@ -106,8 +113,8 @@ QPushButton#BTN_getHosts:hover
    <widget class="QPushButton" name="BTN_getServices">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>240</y>
+      <x>440</x>
+      <y>20</y>
       <width>111</width>
       <height>23</height>
      </rect>
@@ -130,27 +137,17 @@ QPushButton#BTN_getServices:hover
    <widget class="QTableWidget" name="TW_Services">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>270</y>
-      <width>501</width>
-      <height>281</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="textEdit">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
+      <x>440</x>
       <y>50</y>
-      <width>281</width>
-      <height>501</height>
+      <width>321</width>
+      <height>181</height>
      </rect>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>300</x>
       <y>50</y>
       <width>81</width>
       <height>16</height>
@@ -163,7 +160,7 @@ QPushButton#BTN_getServices:hover
    <widget class="QSplitter" name="splitter_3">
     <property name="geometry">
      <rect>
-      <x>690</x>
+      <x>630</x>
       <y>20</y>
       <width>131</width>
       <height>23</height>
@@ -183,7 +180,7 @@ QPushButton#BTN_getServices:hover
   <widget class="QGroupBox" name="GB_Connexion">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>710</x>
      <y>10</y>
      <width>201</width>
      <height>111</height>
@@ -198,11 +195,97 @@ QPushButton#BTN_getServices:hover
    <property name="title">
     <string>Connexion à un collecteur distant</string>
    </property>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>52</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Adresse IP</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox">
+    <property name="geometry">
+     <rect>
+      <x>71</x>
+      <y>30</y>
+      <width>112</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>50</y>
+      <width>161</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="BTN_Timer">
+       <property name="styleSheet">
+        <string notr="true">QPushButton#BTN_Timer
+{
+	background:rgb(186, 186, 186);
+}
+
+QPushButton#BTN_Timer:hover
+{
+	background:rgb(94, 94, 94);
+}
+
+QPushButton#BTN_Timer:pressed
+{
+	
+}</string>
+       </property>
+       <property name="text">
+        <string>Commencer</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="BTN_StopTimer">
+       <property name="styleSheet">
+        <string notr="true">QPushButton#BTN_StopTimer
+{
+	background:rgb(186, 186, 186);
+	
+	
+}
+
+QPushButton#BTN_StopTimer:hover
+{
+	background:rgb(94, 94, 94);
+}
+
+QPushButton#BTN_StopTimer:pressed
+{
+	
+}</string>
+       </property>
+       <property name="text">
+        <string>Arrêter</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>70</y>
+      <y>80</y>
       <width>181</width>
       <height>25</height>
      </rect>
@@ -263,38 +346,15 @@ QPushButton#BTN_Deconnexion:pressed
      </item>
     </layout>
    </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>52</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Adresse IP</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="comboBox">
-    <property name="geometry">
-     <rect>
-      <x>71</x>
-      <y>30</y>
-      <width>112</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true"/>
-    </property>
-   </widget>
   </widget>
   <widget class="QToolButton" name="toolButton">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="geometry">
     <rect>
-     <x>840</x>
-     <y>0</y>
+     <x>920</x>
+     <y>10</y>
      <width>25</width>
      <height>19</height>
     </rect>
@@ -303,26 +363,13 @@ QPushButton#BTN_Deconnexion:pressed
     <string>...</string>
    </property>
   </widget>
-  <widget class="QLabel" name="LA_Status">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>710</y>
-     <width>371</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
   <widget class="QGroupBox" name="GB_Interrogation">
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>10</y>
+     <x>20</x>
+     <y>20</y>
      <width>191</width>
-     <height>111</height>
+     <height>71</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -332,68 +379,8 @@ QPushButton#BTN_Deconnexion:pressed
 }</string>
    </property>
    <property name="title">
-    <string>Intérrogation autonome</string>
+    <string>Configuration</string>
    </property>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>70</y>
-      <width>161</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QPushButton" name="BTN_Timer">
-       <property name="styleSheet">
-        <string notr="true">QPushButton#BTN_Timer
-{
-	background:rgb(186, 186, 186);
-}
-
-QPushButton#BTN_Timer:hover
-{
-	background:rgb(94, 94, 94);
-}
-
-QPushButton#BTN_Timer:pressed
-{
-	
-}</string>
-       </property>
-       <property name="text">
-        <string>Commencer</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="BTN_StopTimer">
-       <property name="styleSheet">
-        <string notr="true">QPushButton#BTN_StopTimer
-{
-	background:rgb(186, 186, 186);
-	
-	
-}
-
-QPushButton#BTN_StopTimer:hover
-{
-	background:rgb(94, 94, 94);
-}
-
-QPushButton#BTN_StopTimer:pressed
-{
-	
-}</string>
-       </property>
-       <property name="text">
-        <string>Arrêter</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
    <widget class="QSplitter" name="splitter">
     <property name="geometry">
      <rect>
@@ -416,7 +403,7 @@ QPushButton#BTN_StopTimer:pressed
       <enum>QAbstractSpinBox::UpDownArrows</enum>
      </property>
      <property name="minimum">
-      <number>10</number>
+      <number>5</number>
      </property>
      <property name="maximum">
       <number>60</number>
@@ -469,22 +456,79 @@ QPushButton#BTN_StopTimer:pressed
      </item>
     </widget>
    </widget>
+   <zorder>splitter</zorder>
+   <zorder>splitter_2</zorder>
+   <zorder>comboBox</zorder>
+   <zorder>label</zorder>
   </widget>
-  <widget class="Line" name="line">
+  <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>20</y>
-     <width>20</width>
-     <height>101</height>
+     <x>350</x>
+     <y>-30</y>
+     <width>341</width>
+     <height>201</height>
     </rect>
    </property>
-   <property name="orientation">
-    <enum>Qt::Vertical</enum>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="ressources.qrc">:/img/img/logo.png</pixmap>
    </property>
   </widget>
+  <widget class="QLabel" name="LA_Status">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>110</y>
+     <width>381</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="listWidget">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>140</y>
+     <width>101</width>
+     <height>241</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="toolButton_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>0</y>
+     <width>25</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>...</string>
+   </property>
+  </widget>
+  <zorder>label_5</zorder>
+  <zorder>buttonBox</zorder>
+  <zorder>GB_Contenu</zorder>
+  <zorder>GB_Connexion</zorder>
+  <zorder>toolButton</zorder>
+  <zorder>GB_Interrogation</zorder>
+  <zorder>LA_Status</zorder>
+  <zorder>listWidget</zorder>
+  <zorder>toolButton_2</zorder>
  </widget>
- <resources/>
+ <resources>
+  <include location="ressources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

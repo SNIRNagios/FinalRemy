@@ -48,6 +48,8 @@ private slots:
     void analyseProblemeService(int ligne, int colonne);
     void on_BTN_Timer_clicked();
     void on_BTN_StopTimer_clicked();
+    void on_toolButton_2_clicked();
+
 private:
     Ui::fen_superviseur *ui;
     QWidget *rectangle;
@@ -58,6 +60,8 @@ private:
 
 
     int demande;
+
+    QString demandeListe;
     int frequence;
     int nombreBoucle;
     int count;
@@ -73,6 +77,8 @@ private:
     QString contenu;//Variable qui prendra la valeur de la socket
 
     QStringList liste;//Liste des hôtes et de leurs etats
+    QStringList listeNom;
+
     QMap<QString, QString> equipements;//QMap associant le noms des hotes et leurs etats
     QFile fichierConfiguration;
 

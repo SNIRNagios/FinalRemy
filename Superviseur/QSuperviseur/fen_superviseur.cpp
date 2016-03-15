@@ -42,11 +42,14 @@ fen_superviseur::fen_superviseur(QWidget *parent) : QDialog(parent), ui(new Ui::
     //AUTRES
     ui->TW_Hotes->setEditTriggers(QAbstractItemView::EditTriggers(0));//On rend impossible l'édition des cellules de TW_Hotes
     ui->TW_Services->setEditTriggers(QAbstractItemView::EditTriggers(0));
-    ui->textEdit->append("Logs ["+ ui->comboBox->currentText() + "] : ");
+
 
     //Appels de fonctions
     initialisationTableHote();//Appel de fonction pour initialiser TW_Hotes
     initialisationTableService();//Appel de fonction pour initialiser TW_Services
+    demandeListe = "adresse";
+    LectureFichierConfiguration();
+    demandeListe = "nom";
     LectureFichierConfiguration();
 
     //Désactivation provisoire
@@ -57,7 +60,31 @@ fen_superviseur::fen_superviseur(QWidget *parent) : QDialog(parent), ui(new Ui::
     //Element à cacher provisoirement
     ui->BTN_getHosts->hide();
     ui->BTN_getServices->hide();
+    ui->GB_Connexion->hide();
+    ui->toolButton->hide();
+
+    /*POUR PRESENTATION*/
+    ui->GB_Interrogation->hide();
+    ui->BTN_StopTimer->hide();
+    ui->BTN_Timer->hide();
+    frequence = ui->SB_Frequence->value();//La variable frequence récupére la valeur du spinbox
+    timer->start(1000);//On active le timer qui s'executera toutes les 1000 msec (donc 1 seconde)
+    adresseCollecteur = ui->comboBox->currentText();//On récupére le texte de l'item courant de la combobox
+    indexCollecteur = ui->comboBox->currentIndex();
+    nombreBoucle = 0;
+    ui->LA_Boucle->setText("Boucle : " + QString::number(nombreBoucle));
+    ui->GB_Contenu->setEnabled(true);
+
+
+    //Activation provisoire
+    ui->BTN_StopTimer->setEnabled(true);
+
+    //Désactivation provisoire
+    ui->BTN_Timer->setEnabled(false);
+    ui->GB_Connexion->setEnabled(false);
+    ui->SB_Frequence->setEnabled(false);
 }
+
 
 /*
 résumé      Destructeur.
@@ -90,7 +117,6 @@ int fen_superviseur::LectureFichierConfiguration()
     {
         if(!document.setContent(&fichierConfiguration))
         {
-
             alerte.setText("Impossible de charger le fichier.");
             return -1;
         }
@@ -98,7 +124,16 @@ int fen_superviseur::LectureFichierConfiguration()
     }
     QDomElement root = document.firstChildElement();
 
-    lister(root, "collecteur", "adresse");
+    if(demandeListe == "adresse")
+    {
+        lister(root, "collecteur", "adresse");
+    }
+    else
+    {
+        lister(root, "collecteur", "name");
+    }
+
+
 
     qDebug() << "Lecture xml terminée";
     return 1;
@@ -117,8 +152,21 @@ void fen_superviseur::lister(QDomElement root, QString tagname, QString attribut
         if(itemNode.isElement())
         {
             itemele = itemNode.toElement();
-            ui->comboBox->addItem(itemele.attribute(attribute));
+
+            if(demandeListe == "nom")
+            {
+                listeNom << itemele.attribute(attribute);
+
+                ui->listWidget->addItem(listeNom[i]);
+
+            }
+            else
+            {
+                ui->comboBox->addItem(itemele.attribute(attribute));
+
+            }
         }
+
 
     }
 }
@@ -278,11 +326,11 @@ void fen_superviseur::insertion()
         int compteurColonne = 0;
 
         QString etats[5];
-        etats[0] = "UP";
-        etats[1] = "PENDING";
-        etats[2] = "WARNING";
-        etats[3] = "CRITICAL";
-        etats[4] = "UNKNOWN";
+        etats[0] = "ACTIF";
+        etats[1] = "EN SUSPENS";
+        etats[2] = "DANGER";
+        etats[3] = "CRITIQUE";
+        etats[4] = "INCONNUE";
 
 
         int role = 0;
@@ -557,7 +605,7 @@ void fen_superviseur::analyseProblemeService(int ligne, int colonne)
     QString statut = ui->TW_Services->item(ligne,colonne)->data(0).toString();
 
 
-    if(statut == "UNKNOWN")
+    if(statut == "INCONNUE")
     {
         QString service = ui->TW_Services->item(ligne,colonne-2)->data(0).toString();
         QString hote = ui->TW_Services->item(ligne, colonne-3)->data(0).toString() ;
@@ -596,7 +644,7 @@ void fen_superviseur::analyseProblemeService(int ligne, int colonne)
             alerte.exec();
         }
     }
-    else if(statut == "WARNING")
+    else if(statut == "DANGER")
     {
 
         QString service = ui->TW_Services->item(ligne,colonne-2)->data(0).toString();
@@ -608,6 +656,17 @@ void fen_superviseur::analyseProblemeService(int ligne, int colonne)
             alerte.setText("L'espace disque de " + hote + " est faible.\nIl est recommandé libérer de la place pour faire fonctionner le superviseur.");
             alerte.exec();
         }
+    }
+    else if(statut == "CRITIQUE")
+    {
+
+        QString service = ui->TW_Services->item(ligne,colonne-2)->data(0).toString();
+        QString hote = ui->TW_Services->item(ligne, colonne-3)->data(0).toString() ;
+        alerte.setIcon(QMessageBox::Critical);
+        alerte.setWindowTitle("Situation critique");
+
+        alerte.setText("Le service de " + hote + " semble être critique\n");
+        alerte.exec();
 
     }
 
@@ -622,27 +681,54 @@ return      Aucun
 */
 void fen_superviseur::interrogation()
 {
+    int nbLigne = ui->listWidget->count();
+    static int row = 0;
+    static QColor couleurRouge(204,0,51);
+    static QColor couleurVerte(51,255,102);
     if (ui->comboBox->currentText().isEmpty())//Si l'item du combobox est une chaine de caractére vide
     {
         indexCollecteur = 0;
         ui->comboBox->setCurrentIndex(indexCollecteur);//On dirige l'index du combobox à 0
         nombreBoucle++;//Incrémentation de la variable nombreBoucle
         ui->LA_Boucle->setText("Boucle : " + QString::number(nombreBoucle));//On affiche le nombre de boucles exécutées
+
+        if(row == nbLigne)
+        {
+            row = 0;
+        }
     }
     else
     {
         if(k==0)
         {
+            frequence = ui->SB_Frequence->value();
+            ui->listWidget->setCurrentRow(row);
             ui->LCDN_Chrono->display(k);//on affiche la variable k sur le chronomètre
             adresseCollecteur = ui->comboBox->currentText();//On récupére le texte de l'item courant de la combobox
             ui->LA_Status->setText("Connexion à " + adresseCollecteur);//Le label de statut affiche un message
             k++;//Incrémentation de la variable k
-            indexCollecteur++;//Incrémentation de l'indexCollecteur
-            ui->GB_Contenu->setTitle(adresseCollecteur +":6557");
+
+            ui->GB_Contenu->setTitle(listeNom[row]);
             hotes();
 
 
 
+
+
+
+
+
+        }
+        else if(k==1 && ui->TW_Hotes->rowCount() == 0)
+        {
+                ui->LA_Status->setText("Impossible d'établir une connexion sur " + adresseCollecteur);
+
+                k = 0;
+                indexCollecteur++;//Incrémentation de l'indexCollecteur
+                ui->comboBox->setCurrentIndex(indexCollecteur);
+
+                ui->listWidget->item(row)->setBackgroundColor(couleurRouge);
+                row++;
 
 
 
@@ -651,26 +737,34 @@ void fen_superviseur::interrogation()
         {
             ui->LCDN_Chrono->display(k);//on affiche la variable k sur le chronomètre
             ui->LA_Status->setText("Déconnexion de " + adresseCollecteur);//Le label de statut affiche un message
+            indexCollecteur++;//Incrémentation de l'indexCollecteur
             ui->comboBox->setCurrentIndex(indexCollecteur);
             deconnexion();
             SupressionHote();
             SupressionService();
             initialisationTableHote();
             initialisationTableService();
-
-
+            row++;
+            if(row == nbLigne-1)
+            {
+                row = 0;
+            }
             k = 0;//La variable k vaut zéro
         }
         else
         {
+
             ui->LCDN_Chrono->display(k);//on affiche la variable k sur le chronomètre
             ui->LA_Status->setText("Connexion établie avec succés sur " + adresseCollecteur);//Le label de statut affiche un message
             k++;//Incrémentation de la variable k
+            ui->listWidget->item(row)->setBackgroundColor(couleurVerte);
+
 
             if (count == 0)
             {
                 services();
             }
+
 
         }
     }
@@ -773,5 +867,21 @@ void fen_superviseur::Filtre(QString choix)
     else if(choix == "Inconnu")
     {
         filtre = "\nFilter: state = 3\n";
+    }
+}
+
+void fen_superviseur::on_toolButton_2_clicked()
+{
+    static bool confActive = true;
+    ui->SB_Frequence->setEnabled(true);
+    if(confActive==true)
+    {
+        ui->GB_Interrogation->show();
+        confActive = false;
+    }
+    else
+    {
+        ui->GB_Interrogation->hide();
+        confActive = true;
     }
 }

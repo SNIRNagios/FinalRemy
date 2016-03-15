@@ -46,15 +46,19 @@ void FEN_Accueil::on_BTN_Connexion_clicked()
 
 void FEN_Accueil::on_BTN_AccesSuperviseur_clicked()
 {
-    /*this->hide();
+    this->hide();
     fen_superviseur fenetreSuperviseur;
     fenetreSuperviseur.setModal(true);
-    fenetreSuperviseur.setFixedSize(872,738);
-    fenetreSuperviseur.exec();*/
+    fenetreSuperviseur.setFixedSize(960,390);
+    fenetreSuperviseur.exec();
 
-    this->hide();
+
+    /*this->hide();
     fen_map supervision;
     supervision.setModal(true);
     //supervision.setFixedSize(400,250);
-    supervision.exec();
+    supervision.setMinimumHeight(340);
+    supervision.setMinimumWidth(620);
+    supervision.setMaximumWidth(620);
+    supervision.exec();*/
 }

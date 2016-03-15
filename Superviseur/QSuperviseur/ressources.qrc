@@ -6,5 +6,7 @@
         <file>img/eye.ico</file>
         <file>img/logo.png</file>
         <file>img/white_wall.jpeg</file>
+        <file>img/logoSUB.png</file>
+        <file>img/LOGOFEN.png</file>
     </qresource>
 </RCC>

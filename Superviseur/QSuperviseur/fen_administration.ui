@@ -11,9 +11,15 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>QSupervise - Administration</string>
+   <string>LES VALLONS DE LA TOUR - Administration</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="ressources.qrc">
+    <normaloff>:/img/img/LOGOFEN.png</normaloff>:/img/img/LOGOFEN.png</iconset>
   </property>
  </widget>
- <resources/>
+ <resources>
+  <include location="ressources.qrc"/>
+ </resources>
  <connections/>
 </ui>

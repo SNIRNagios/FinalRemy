@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>LES VALLONS DE LA TOUR - Accueil</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="ressources.qrc">
+    <normaloff>:/img/img/LOGOFEN.png</normaloff>:/img/img/LOGOFEN.png</iconset>
+  </property>
   <property name="documentMode">
    <bool>false</bool>
   </property>

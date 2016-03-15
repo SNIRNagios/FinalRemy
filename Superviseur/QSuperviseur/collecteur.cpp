@@ -6,6 +6,7 @@ Collecteur::Collecteur(QObject *parent) : QObject(parent)
     socketLivestatus = new QTcpSocket(this);
     connect(socketLivestatus, SIGNAL(connected()), this, SLOT(connexionEtat()));
     connect(socketLivestatus, SIGNAL(readyRead()), this, SLOT(lectureCollecteur()));
+    connect(socketLivestatus, SIGNAL(disconnected()),this,SLOT(deconnexionEtat()));
 
 }
 
@@ -13,14 +14,14 @@ void Collecteur::connexionCollecteur(QString collecteur)
 { 
     adresseCollecteur = collecteur;
     socketLivestatus->connectToHost(adresseCollecteur, portLivestatus);
-    /*if(socketLivestatus->waitForConnected(2000) == false)
+    if(socketLivestatus->waitForConnected(2000) == false)
     {
         qDebug() << "Impossible d'établir une connexion.";
     }
     else
     {
         qDebug() << "La connexion est un succés.";
-    }*/
+    }
 }
 
 void Collecteur::obtenirHotes(QString query)
@@ -37,7 +38,14 @@ void Collecteur::deconnexionCollecteur()
 
 void Collecteur::connexionEtat()
 {
+    qDebug() << "Connexion : " << socketLivestatus->state() << "\n";
     emit vers_IHM_connexionEtat();
+}
+
+void Collecteur::deconnexionEtat()
+{
+    qDebug() << "Deconnexion : " << socketLivestatus->state() << "\n";
+    emit vers_IHM_deconnexionEtat();
 }
 
 void Collecteur::lectureCollecteur()

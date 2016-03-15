@@ -44,7 +44,7 @@ private:
     QString demande;
     int nombreCollecteur;
     int k;
-
+    bool connexionEtat;
 
     QList<QPushButton*> rectangle;
     QStringList contenu;//Variable qui prendra la valeur de la socket
@@ -58,6 +58,8 @@ private slots:
     void Erreur();
     void Interrogation();
     void on_pushButton_clicked();
+    void EtatConnexion();
+    void EtatDeconnexion();
 };
 
 #endif // FEN_MAP_H
