@@ -12,7 +12,13 @@
 #include <QHBoxLayout>
 #include <QtXml>
 #include <QPushButton>
+#include <QTreeWidget>
+#include <QTime>
+#include <string>
+#include "qftp.h"
 #include "collecteur.h"
+#include "collecteurlog.h"
+using namespace std;
 
 namespace Ui {
 class fen_map;
@@ -30,13 +36,18 @@ public:
     int LectureFichierConfiguration();
     void Lister(QDomElement root, QString tagname, QString attribute);
 
-
+    void ajouterRacine(QString nom, QString statut);
+    void ajouterEnfant(QTreeWidgetItem *parent, QString nom, QString adresse);
+    void recuperationLogs(QString adresse, QString nom);
+    void Remplissage(QString demande);
+    void Supression(QString element);
 
     ~fen_map();
 
 private:
     Ui::fen_map *ui;
     Collecteur *site;
+    //QFtp *ftp;
     QFile fichierConfiguration;
     QStringList listeAdresse;
     QStringList listeNom;
@@ -48,8 +59,18 @@ private:
 
     QList<QPushButton*> rectangle;
     QStringList contenu;//Variable qui prendra la valeur de la socket
+    QStringList listeSite;
+    QStringList listeHoteEtat;//Liste des hôtes et de leurs etats
+    QStringList listeServiceEtat;
+
+    QString contenusocket;//Variable qui prendra la valeur de la socket
+    QString requete;
 
     QTimer *timer;
+    QTimer *timerlog;
+    QTime heurePC;
+    collecteurlog *ftp;
+
 
 private slots:
     void alerte();
@@ -60,6 +81,9 @@ private slots:
     void on_pushButton_clicked();
     void EtatConnexion();
     void EtatDeconnexion();
+    void on_PB_Logs_clicked();
+    void AffichageHotes(QTreeWidgetItem*, int);
+    void AffichageServices(int, int);
 };
 
 #endif // FEN_MAP_H

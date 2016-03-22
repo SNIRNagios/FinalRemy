@@ -17,13 +17,19 @@ SOURCES += main.cpp\
     fen_administration.cpp \
     fen_superviseur.cpp \
     collecteur.cpp \
-    fen_map.cpp
+    fen_map.cpp \
+    qftp.cpp \
+    qurlinfo.cpp \
+    collecteurlog.cpp
 
 HEADERS  += fen_accueil.h \
     fen_administration.h \
     fen_superviseur.h \
     collecteur.h \
-    fen_map.h
+    fen_map.h \
+    qftp.h \
+    qurlinfo.h \
+    collecteurlog.h
 
 FORMS    += fen_accueil.ui \
     fen_administration.ui \

@@ -1,0 +1,16 @@
+INPUT(
+./debug\main.o
+./debug\fen_accueil.o
+./debug\fen_administration.o
+./debug\fen_superviseur.o
+./debug\collecteur.o
+./debug\fen_map.o
+./debug\qftp.o
+./debug\qurlinfo.o
+./debug\qrc_ressources.o
+./debug\moc_fen_accueil.o
+./debug\moc_fen_administration.o
+./debug\moc_fen_superviseur.o
+./debug\moc_collecteur.o
+./debug\moc_fen_map.o
+);

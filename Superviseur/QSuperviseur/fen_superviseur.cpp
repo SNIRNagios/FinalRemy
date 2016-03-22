@@ -228,6 +228,7 @@ void fen_superviseur::traitement()
     //Création de l'expression ";" et "\n" afin de pouvoir splitter le contenu de la socket avec ces caractéres
     QRegExp caractere("[;/\n/]");
 
+
     //On split la liste en plusieurs items à chaque rencontre de l'expression ";" et "\n"
     liste = contenu.split(caractere);
 }

@@ -1,0 +1,16 @@
+INPUT(
+./release\main.o
+./release\fen_accueil.o
+./release\fen_administration.o
+./release\fen_superviseur.o
+./release\collecteur.o
+./release\fen_map.o
+./release\qftp.o
+./release\qurlinfo.o
+./release\qrc_ressources.o
+./release\moc_fen_accueil.o
+./release\moc_fen_administration.o
+./release\moc_fen_superviseur.o
+./release\moc_collecteur.o
+./release\moc_fen_map.o
+);
