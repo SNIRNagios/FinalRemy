@@ -20,7 +20,11 @@ SOURCES += main.cpp\
     fen_map.cpp \
     qftp.cpp \
     qurlinfo.cpp \
-    collecteurlog.cpp
+    collecteurlog.cpp \
+    fen_ajoutercollecteur.cpp \
+    fen_ajoutersite.cpp \
+    xmlcollecteur.cpp \
+    xmlsite.cpp
 
 HEADERS  += fen_accueil.h \
     fen_administration.h \
@@ -29,12 +33,18 @@ HEADERS  += fen_accueil.h \
     fen_map.h \
     qftp.h \
     qurlinfo.h \
-    collecteurlog.h
+    collecteurlog.h \
+    fen_ajoutercollecteur.h \
+    fen_ajoutersite.h \
+    xmlcollecteur.h \
+    xmlsite.h
 
 FORMS    += fen_accueil.ui \
     fen_administration.ui \
     fen_superviseur.ui \
-    fen_map.ui
+    fen_map.ui \
+    fen_ajoutercollecteur.ui \
+    fen_ajoutersite.ui
 
 RESOURCES += \
     ressources.qrc

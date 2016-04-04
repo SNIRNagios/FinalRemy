@@ -2,6 +2,8 @@
 #define FEN_ADMINISTRATION_H
 
 #include <QDialog>
+#include "fen_ajoutercollecteur.h"
+#include "fen_ajoutersite.h"
 
 namespace Ui {
 class fen_administration;
@@ -17,6 +19,12 @@ public:
 
 private:
     Ui::fen_administration *ui;
+    Configurateur *configurateur;//Pointeur * configurateur vers la classe Configurateur pour accèder aux attributs et méthodes de celle-ci
+
+private slots:
+    void on_PB_ajouterSite_clicked();//Slot su bouton ajouter un site
+    void on_PB_ajouterCollecteur_clicked();
+
 };
 
 #endif // FEN_ADMINISTRATION_H

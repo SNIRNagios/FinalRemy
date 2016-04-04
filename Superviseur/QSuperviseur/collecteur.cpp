@@ -17,6 +17,7 @@ void Collecteur::connexionCollecteur(QString collecteur)
     if(socketLivestatus->waitForConnected(2000) == false)
     {
         qDebug() << "Impossible d'établir une connexion.";
+        emit socketLivestatus->disconnected();
     }
     else
     {
@@ -33,6 +34,7 @@ void Collecteur::obtenirHotes(QString query)
 
 void Collecteur::deconnexionCollecteur()
 {
+    qDebug() << "Déconnexion : " << socketLivestatus->state() << "\n";
     socketLivestatus->close();
 }
 

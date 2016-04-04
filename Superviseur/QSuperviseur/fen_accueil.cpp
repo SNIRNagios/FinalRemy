@@ -35,8 +35,13 @@ void FEN_Accueil::on_BTN_Connexion_clicked()
         this->hide();
         fen_administration fenetreAdministration;
         fenetreAdministration.setModal(true);
-        fenetreAdministration.setFixedSize(500,400);
+        fenetreAdministration.setFixedSize(699,317);
         fenetreAdministration.exec();
+
+        /*FEN_Configurateur fenetreConfiguration;
+        fenetreConfiguration.setModal(true);
+        fenetreConfiguration.setFixedSize(500,400);
+        fenetreConfiguration.exec();*/
     }
     else
     {
@@ -56,6 +61,7 @@ void FEN_Accueil::on_BTN_AccesSuperviseur_clicked()
     this->hide();
     fen_map supervision;
     supervision.setModal(true);
+    supervision.setFixedSize(1094, 509);
     //supervision.setFixedSize(400,250);
     /*supervision.setMinimumHeight(340);
     supervision.setMinimumWidth(620);

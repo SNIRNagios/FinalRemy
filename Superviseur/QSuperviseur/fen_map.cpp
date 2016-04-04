@@ -5,12 +5,14 @@ fen_map::fen_map(QWidget *parent) : QDialog(parent),ui(new Ui::fen_map)
 {
     ui->setupUi(this);
     connexionEtat = false;
-    ui->pushButton->hide();
+
+
 
     //allocation dynamique
     site = new Collecteur(this);
     timer = new QTimer();
     timerlog = new QTimer();
+    timerHeure = new QTimer();
     qDebug() << heurePC.currentTime();
     ui->LE_Temps->setText("Heure : " + heurePC.currentTime().toString("hh:mm:ss"));
     //ftp = new QFtp();
@@ -19,15 +21,19 @@ fen_map::fen_map(QWidget *parent) : QDialog(parent),ui(new Ui::fen_map)
 
     //Signaux et slots
     connect(site, SIGNAL(vers_IHM_texte(QString)),this,SLOT(obtenirSocket(QString)));//Le signal vers_IHM_texte(QString) est connecté au slot ObtenirSocket(QString)
-    connect(this, SIGNAL(siteTraiteValider()),this,SLOT(Validation()));
-    connect(this, SIGNAL(siteTraiteErreur()),this,SLOT(Erreur()));
     connect(site, SIGNAL(vers_IHM_connexionEtat()),this,SLOT(EtatConnexion()));
     connect(site, SIGNAL(vers_IHM_deconnexionEtat()),this,SLOT(EtatDeconnexion()));
     connect(timer, SIGNAL(timeout()), this, SLOT(Interrogation()));//Le signal timeout() et connecté au slot interrogation()
-    //connect(timerlog, SIGNAL(timeout()), this, SLOT(on_PB_Logs_clicked()));
     connect(ui->treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*,int)),this, SLOT(AffichageHotes(QTreeWidgetItem*,int)));
-    //connect(ui->treeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),this,SLOT(AffichageServices(QTreeWidgetItem*,int)));
     connect(ui->TW_Hotes, SIGNAL(cellClicked(int,int)),this,SLOT(AffichageServices(int, int)));//Le signal cellClicked(int,int)est connecté au slot analyseProblemeHote(int,int)
+    connect(ui->progressBar, SIGNAL(valueChanged(int)),  this, SLOT(Logloop(int)));
+    connect(ftp, SIGNAL(vers_IHM_ProgressionTransfert(int)), ui->progressBar, SLOT(setValue(int)));
+    connect(timerHeure, SIGNAL(timeout()), this, SLOT(RecuperationAutomatiqueLog()));
+    connect(this, SIGNAL(siteTraiteValider()),this,SLOT(Validation()));
+    connect(this, SIGNAL(siteTraiteErreur()),this,SLOT(Erreur()));
+
+    ui->groupBox->setTitle("Sélectionnez un collecteur en cliquant sur son adresse IPv4");
+
     //EXECUTION DU PROGRAMME
 
     //demande = "adresse";//L'utilisateur demande a avoir une liste d'adresse
@@ -35,7 +41,7 @@ fen_map::fen_map(QWidget *parent) : QDialog(parent),ui(new Ui::fen_map)
     //demande = "nom";//L'utilisateur demande a avoir une liste de nom
     //LectureFichierConfiguration();//MISE A JOUR DE LA LISTE CONTENANT LES NOMS
 
-    for (int i = 0; i < listeNom.count(); i++)//A partir des listes obtenues, une liste de qpushbutton et est crée ainsi que des qlabels
+    /*for (int i = 0; i < listeNom.count(); i++)//A partir des listes obtenues, une liste de qpushbutton et est crée ainsi que des qlabels
     {
         //BOUTON DE COULEUR
         QPushButton *p = new QPushButton("", this);//listeCollecteur[i]
@@ -54,11 +60,9 @@ fen_map::fen_map(QWidget *parent) : QDialog(parent),ui(new Ui::fen_map)
 
         //AJOUT DU BOUTON ET LABEL DANS LE LAYOUT couche
         ui->couche->addRow(p,l);
+    }*/
 
-
-    }
-    /*ajouterRacine("Lycée Edouard Branly", "");
-    ajouterRacine("Ville de Lyon", "");*/
+    timerHeure->start(1000);
 
 
 
@@ -121,11 +125,11 @@ int fen_map::LectureFichierConfiguration()
     }
 
     QDomElement racine = document.documentElement();
-    QString xml = document.toString();
-    ui->textEdit->append(xml);
+    //QString xml = document.toString();
+    //ui->textEdit->append(xml);
     //ui->treeWidget->setColumnCount(2);
 
-    qDebug() << xml << "\n";
+    //qDebug() << xml << "\n";
 
     qDebug() << "<" << racine.tagName() << ">";//<superviseur>
 
@@ -138,7 +142,7 @@ int fen_map::LectureFichierConfiguration()
 
         QDomElement element = noeud.toElement();//convert QDomNode into a QDomElement
 
-        string nomSite = noeud.nodeName().toStdString();
+        QString nomSite = noeud.nodeName();
 
         //Obtenir attribut et valeurs du premier enfant
         QDomNamedNodeMap attributsNoeu = noeud.attributes();//all atributes
@@ -146,7 +150,7 @@ int fen_map::LectureFichierConfiguration()
         QDomAttr attributs = attributsItem.toAttr();//convert QDomNode into a QDomAttr
         QString attributeValue = attributs.value();//return the value of the attr
 
-        qDebug() <<  attributeValue;
+        qDebug() <<  attributeValue;// attr nom de <site>
         //Obtenir attribut et valeurs du premier enfant
 
 
@@ -155,36 +159,42 @@ int fen_map::LectureFichierConfiguration()
             //AJOUT DE LA RACINE DANS QTREEWIDGET
             QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
             item->setText(0,attributeValue);
-            qDebug() << QString::fromStdString(nomSite);
+            qDebug() << nomSite;
 
             //AJOUT DES ENFANTS DANS QTREEWIDGET
             for(int i = 0; i < childnoeud.count(); i++)
             {
-                QTreeWidgetItem *subitem = new QTreeWidgetItem();
+                QTreeWidgetItem *subitem = new QTreeWidgetItem(item);//création d'une sous-ligne
 
                 //Nom du collecteur
-                QDomNamedNodeMap z = childnoeud.at(i).attributes();
-                QDomNode attributsItems = z.item(0);
-                QDomAttr attributes = attributsItems.toAttr();
-                QString attributesAdresse = attributes.name();
-                QString attributesValue = attributes.value();
-                subitem->setText(1,attributesValue);
-                qDebug() << attributesAdresse <<attributesValue;
+                QDomNamedNodeMap z = childnoeud.at(i).attributes();//z contient tous les attributs de la ligne
+                QDomNode attributsItems = z.namedItem("nom");//on pointe vers l'attribut name
+                QDomAttr attributes = attributsItems.toAttr();//on transofmre name en attribut
+                QString attributesValue = attributes.value();//on extraire la valeur de l'attribut name
+                subitem->setText(0,attributesValue);//on ajouter la valeur dans la premiere colonne du treeview
+                listeCollecteur << attributesValue;
+                qDebug() << attributesValue;
 
-                z = childnoeud.at(i).attributes();
-                attributsItems = z.item(1);
-                attributes = attributsItems.toAttr();
-                attributesAdresse = attributes.name();
-                attributesValue = attributes.value();
-                subitem->setText(0,attributesValue);
-                qDebug() << attributesAdresse <<attributesValue;
+                //Adresse
+                attributsItems = z.namedItem("adresse");//on pointe vers l'attribut adresse
+                attributes = attributsItems.toAttr();//on transofmre name en attribut
+                attributesValue = attributes.value();//on extraire la valeur de l'attribut name
+                subitem->setText(1,attributesValue);//on ajouter la valeur dans la premiere colonne du treeview
+                listeCollecteur << attributesValue;
+                qDebug() <<attributesValue;
 
                 //Insertion
-                item->addChild(subitem);
+                item->addChild(subitem);//ajout de la sous-ligne dans le treewidget
             }
         }
         noeud = noeud.nextSibling();
     }while(!noeud.isNull());
+
+    for(int i = 1; i < listeCollecteur.size(); i++)
+    {
+        ui->CB_Adresse->addItem(listeCollecteur[i++]);
+    }
+
 
 
 
@@ -195,60 +205,6 @@ int fen_map::LectureFichierConfiguration()
     return 1;
 }
 
-void fen_map::Lister(QDomElement root, QString balise, QString attribute)
-{
-    /*QDomNodeList items;
-    QDomElement itemele;
-    items = root.elementsByTagName(balise);
-
-
-    nombreCollecteur = items.count();
-    qDebug() << "Nombre d'items " << items.count();
-
-
-    for (int i = 0; i < items.count(); i++)
-    {
-        QDomNode itemNode = items.at(i);
-        if(itemNode.isElement())
-        {
-            itemele = itemNode.toElement();
-            if(demande == "nom")
-            {
-                listeNom << itemele.attribute(attribute);
-
-            }
-            else
-            {
-                listeAdresse << itemele.attribute(attribute);
-            }
-        }
-
-    }*/
-}
-
-void fen_map::ajouterRacine(QString nom, QString statut)
-{
-    QColor couleurRouge(204,0,51);
-    QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
-    item->setText(0,nom);
-    item->setBackgroundColor(1,couleurRouge);
-    ui->treeWidget->addTopLevelItem(item);
-
-
-    for (int i = 0; i < nombreCollecteur; i++)
-    {
-       ajouterEnfant(item, listeNom[i], listeAdresse[i]);
-    }
-
-}
-
-void fen_map::ajouterEnfant(QTreeWidgetItem *parent, QString nom, QString adresse)
-{
-    QTreeWidgetItem *item = new QTreeWidgetItem();
-    item->setText(0,nom);
-    item->setText(1,adresse);
-    parent->addChild(item);
-}
 fen_map::~fen_map()
 {
     delete ui;
@@ -256,12 +212,12 @@ fen_map::~fen_map()
 
 void fen_map::Validation()
 {
-    //
+    qDebug() << "Appel de Validation()";
 }
 
 void fen_map::Erreur()
 {
-    //
+    qDebug() << "Appel de Erreur()";
 }
 
 void fen_map::Interrogation()
@@ -381,75 +337,84 @@ void fen_map::obtenirSocket(QString socketLivestatus)
 
 void fen_map::EtatConnexion()
 {
+    QString adresse = ui->treeWidget->currentItem()->text(1);
     connexionEtat = true;
 }
 
 void fen_map::EtatDeconnexion()
 {
+    QString adresse = ui->treeWidget->currentItem()->text(1);
+    QString nom = ui->treeWidget->currentItem()->text(0);
+
+    if(ui->TW_Hotes->rowCount() > 0)
+    {
+        ui->groupBox->setTitle("Connexion réussie : " +  nom + " (" + adresse + ")");
+
+    }
+    else
+    {
+
+        ui->groupBox->setTitle("Echec de la connexion : " + nom + " (" + adresse + ")");
+
+    }
+
     connexionEtat = false;
 }
 
 
 void fen_map::on_pushButton_clicked()
 {
+    static bool affichageParametre = true;
+    if(affichageParametre==true)
+    {
+
+        this->setFixedSize(1094, 699);
+        affichageParametre = false;
+    }
+    else
+    {
+        this->setFixedSize(1094, 509);
+        affichageParametre = true;
+
+    }
 
 
-    ui->LA_Satus->setText("");
+
 }
 
 void fen_map::on_PB_Logs_clicked()
 {
-    static int k =0;
-    qDebug() << "Fichier " + QString::number(k+1);
-    recuperationLogs(listeAdresse[k],listeNom[k]);
-    k++;
-    if(k == nombreCollecteur)
-    {
-        k = 0;
-        //timerlog->stop();
-    }
+    QString nom = ui->treeWidget->currentItem()->text(0);
+    QString adresse = ui->treeWidget->currentItem()->text(1);
 
+    recuperationLogs(adresse, nom + "_" + heurePC.currentTime().toString("hhmmss") + ".log");
 
 }
 
 void fen_map::recuperationLogs(QString adresse, QString nom)
 {
+
     ftp->Connexion(adresse,21,"pi","SNIRNagios");
     ftp->Recuperation(nom);
+}
 
-        /*QString fileName = nom;
-        QString path = "C://ProgramData/superviseur/logs";
-
-
-        qDebug() << path + "/" + fileName + ".txt";
-        QFile *fichier = new QFile(path + "/" + fileName + ".log");
-
-        ftp->login("pi", "SNIRNagios");
-        qDebug() << "connexion...";
-
-        ftp->connectToHost(adresse,21);
-
-        if(!fichier->open(QIODevice::WriteOnly))
-        {
-            qDebug() << "Erreur lors de la creation du fichier";
-            delete fichier;
-        }
-        else
-        {
-
-            ftp->get("/var/log/nagios3/nagios.log",fichier);
-            qDebug() << "Ecriture réussie";
-        }
-        qDebug() << "Déconnexion";
-        //ftp->disconnect();
-
-
-        //fichier->close();*/
+void fen_map::Logloop(int value)
+{
+    if(value == 100)
+    {
+        ui->LA_InformationsUtilisateurs->setText("Téléchargement terminé");
+    }
+    else
+    {
+        ui->LA_InformationsUtilisateurs->setText("Transfert en cours...");
+    }
 }
 
 void fen_map::AffichageHotes(QTreeWidgetItem* item, int colonne)
 {
+    ui->groupBox->setTitle("Veuillez sélectionner un collecteur");
     Supression("Hotes");
+    Supression("Services");
     QString adresseIP = item->text(1);
     QString nomCollecteur = item->text(0);
     requete = "Hotes";
@@ -457,22 +422,31 @@ void fen_map::AffichageHotes(QTreeWidgetItem* item, int colonne)
     if(adresseIP == "")
     {
         qDebug() << "Impossible de se connecte à " << adresseIP;
+
     }
     else
     {
         qDebug() << "AdresseIP : " << adresseIP;
         qDebug() << "Collecteur: " << nomCollecteur;
+        ui->LA_InformationsUtilisateurs->setText("Tentative de connexion à " + nomCollecteur + " (" + adresseIP + ").");
         site->connexionCollecteur(adresseIP);
         site->obtenirHotes("GET hosts\nColumns: host_name state\n");
+
     }
 }
 
 void fen_map::AffichageServices(int ligne, int colonne)
 {
-    QString adresseIP = ui->TW_Hotes->item(ligne,colonne)->data(0).toString();
+    requete = "Services";
+    Supression("Services");
+    QString nomHote = ui->TW_Hotes->item(ligne,colonne-2)->data(0).toString();
+    qDebug() << nomHote;
 
-    site->connexionCollecteur("");
-    site->obtenirHotes("GET services\nColumns: host_name service_description state\nFilter: state != 0\n");
+    QString adresse = ui->treeWidget->currentItem()->text(1);
+    QString nom = ui->treeWidget->currentItem()->text(0);
+
+    site->connexionCollecteur(adresse);
+    site->obtenirHotes("GET services\nColumns: host_name service_description state\nFilter: host_name = " + nomHote + "\n");//Filter: state != 0\n
 
 }
 
@@ -558,7 +532,7 @@ void fen_map::Remplissage(QString demande)
         etats[1] = "EN SUSPENS";
         etats[2] = "DANGER";
         etats[3] = "CRITIQUE";
-        etats[4] = "INCONNUE";
+        etats[4] = "INCONNU";
 
 
         int role = 0;
@@ -640,5 +614,16 @@ void fen_map::Supression(QString element)
             ui->TW_Services->removeRow(i);
         }
     }
+}
+
+void fen_map::RecuperationAutomatiqueLog()
+{
+    ui->LE_Temps->setText("Heure : " + heurePC.currentTime().toString("hh:mm:ss"));
+
+    if(heurePC.currentTime().toString("hh:mm:ss") == "11:42:00")
+    {
+        timerHeure->stop();
+    }
+
 }
 

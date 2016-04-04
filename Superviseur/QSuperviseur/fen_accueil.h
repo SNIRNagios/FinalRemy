@@ -6,6 +6,7 @@
 #include <QProgressBar>
 #include <QTimer>
 #include "fen_administration.h"
+#include "fen_configurateur.h"
 
 
 namespace Ui {

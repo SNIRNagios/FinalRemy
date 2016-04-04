@@ -34,10 +34,6 @@ signals:
 public:
     explicit fen_map(QWidget *parent = 0);
     int LectureFichierConfiguration();
-    void Lister(QDomElement root, QString tagname, QString attribute);
-
-    void ajouterRacine(QString nom, QString statut);
-    void ajouterEnfant(QTreeWidgetItem *parent, QString nom, QString adresse);
     void recuperationLogs(QString adresse, QString nom);
     void Remplissage(QString demande);
     void Supression(QString element);
@@ -47,9 +43,9 @@ public:
 private:
     Ui::fen_map *ui;
     Collecteur *site;
-    //QFtp *ftp;
     QFile fichierConfiguration;
     QStringList listeAdresse;
+    QStringList listeCollecteur;
     QStringList listeNom;
     QString chemin;
     QString demande;
@@ -68,6 +64,8 @@ private:
 
     QTimer *timer;
     QTimer *timerlog;
+    QTimer *timerHeure;
+
     QTime heurePC;
     collecteurlog *ftp;
 
@@ -84,6 +82,8 @@ private slots:
     void on_PB_Logs_clicked();
     void AffichageHotes(QTreeWidgetItem*, int);
     void AffichageServices(int, int);
+    void Logloop(int);
+    void RecuperationAutomatiqueLog();
 };
 
 #endif // FEN_MAP_H

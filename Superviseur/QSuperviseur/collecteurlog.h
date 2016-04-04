@@ -15,11 +15,19 @@ public:
     void Recuperation(QString nomfichier);
 
 signals:
+    void vers_IHM_ProgressionTransfert(int);
 
 public slots:
 
 private slots:
     void InfoCommande(int);
+    void InfoList(QUrlInfo);
+    void Deconnexion(int, bool);
+    void EnvoyerProgressionIHM(qint64, qint64);
+    void EtatFTP(int);
+    void TraitementCommande(bool);
+
+
 };
 
 #endif // COLLECTEURLOG_H
